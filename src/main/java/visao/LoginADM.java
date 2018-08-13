@@ -5,15 +5,17 @@
  */
 package visao;
 
+import controle.Administrador;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author nathan.cezar
  */
 public class LoginADM extends javax.swing.JFrame {
 
-    /**
-     * Creates new form LoginADM
-     */
+    Administrador adm = new Administrador("adm", "adm");
+    
     public LoginADM() {
         initComponents();
     }
@@ -51,6 +53,11 @@ public class LoginADM extends javax.swing.JFrame {
         jLabel3.setText("Área Administrativa");
 
         jButton1.setText("Entrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,8 +121,20 @@ public class LoginADM extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jPasswordField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        if (jTextField1.getText().equals(adm.getLogin()) && jPasswordField1.getText().equals(adm.getSenha())){
+            ControleEstoque controle = new ControleEstoque();
+            controle.setVisible(true); // para visualizar a tela
+            dispose(); // fecha tela anterior
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuário ou senha inválidos!");
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
