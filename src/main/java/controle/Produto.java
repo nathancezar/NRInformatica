@@ -8,13 +8,15 @@ package controle;
 public class Produto {
     
     int codigo;
+    int quantidade;
     float preco;
     String nome;
     String endereco_imagem;
     String descricao;
     
-    public Produto(int codigo, float preco, String nome, String endereco_imagem, String descricao) {
+    public Produto(int codigo,int quantidade, float preco, String nome, String endereco_imagem, String descricao) {
         this.codigo = codigo;
+        this.quantidade = quantidade;
         this.preco = preco;
         this.nome = nome;
         this.endereco_imagem = endereco_imagem;
@@ -23,6 +25,10 @@ public class Produto {
 
     public int getCodigo() {
         return codigo;
+    }
+    
+    public int getQuantidade() {
+        return quantidade;
     }
 
     public float getPreco() {
@@ -43,6 +49,10 @@ public class Produto {
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+    
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 
     public void setPreco(float preco) {
