@@ -5,7 +5,7 @@
  */
 package visao;
 
-import controle.Administrador;
+import controle.BancoDeDados;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class LoginADM extends javax.swing.JFrame {
 
-    Administrador adm = new Administrador("adm", "adm");
+    BancoDeDados bd = new BancoDeDados();
     
     public LoginADM() {
         initComponents();
@@ -126,7 +126,7 @@ public class LoginADM extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        if (jTextField1.getText().equals(adm.getLogin()) && jPasswordField1.getText().equals(adm.getSenha())){
+        if (jTextField1.getText().equals(bd.adm.getLogin()) && jPasswordField1.getText().equals(bd.adm.getSenha())){
             ControleEstoque controle = new ControleEstoque();
             controle.setVisible(true); // para visualizar a tela
             dispose(); // fecha tela anterior

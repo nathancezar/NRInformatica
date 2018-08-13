@@ -8,6 +8,6 @@ public class BancoDeDados {
     
     Produto[] produtos = new Produto[100];
     Cliente[] clientes = new Cliente[50];
-    Administrador adm = new Administrador("adm", "adm");
+    public Administrador adm = new Administrador("adm", "adm");
     
 }
