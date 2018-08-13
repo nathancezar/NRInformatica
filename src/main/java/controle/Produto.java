@@ -7,12 +7,9 @@ package controle;
 
 public class Produto {
     
-    int codigo;
-    int quantidade;
-    float preco;
-    String nome;
-    String endereco_imagem;
-    String descricao;
+    private int codigo, quantidade;
+    private float preco;
+    private String nome, endereco_imagem, descricao;
     
     public Produto(int codigo,int quantidade, float preco, String nome, String endereco_imagem, String descricao) {
         this.codigo = codigo;
