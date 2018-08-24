@@ -5,6 +5,9 @@
  */
 package visao;
 
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.Icon;
 import javax.swing.JButton;
 
 /**
@@ -13,14 +16,37 @@ import javax.swing.JButton;
  */
 public class Principal extends javax.swing.JFrame {
 
+    private final String diretorio = "home/nathancezar/NetBeansProjects/Git/NRInformatica/src/main/java/visao";
+    protected File imagen = new File(diretorio);
+    File[] imagens = imagen.listFiles((File pathname) -> pathname.getName().toLowerCase().endsWith(".jpeg"));
+    ArrayList<JButton> botoesProdutos = new ArrayList();
+
     /**
      * Creates new form principal
      */
     public Principal() {
         initComponents();
+        
+        for (int i = 0; i < imagens.length; ++i) {
+            System.out.println(imagens[i]);
+        }
+       
+        botoesProdutos.add(jButton5);
+        botoesProdutos.add(jButton6);
+        botoesProdutos.add(jButton7);
+        botoesProdutos.add(jButton8);
+        botoesProdutos.add(jButton9);
+        botoesProdutos.add(jButton10);
+        botoesProdutos.add(jButton11);
+        botoesProdutos.add(jButton12);
+
+        int i = 0;
+        for (JButton botao : botoesProdutos) {
+            botao.setIcon((Icon) imagens[i]);
+            i++;
+        }
+
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,11 +58,6 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         Principal = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         Produtos = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -54,21 +75,20 @@ public class Principal extends javax.swing.JFrame {
         NomeProduto6 = new javax.swing.JLabel();
         NomeProduto7 = new javax.swing.JLabel();
         NomeProduto8 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        banner = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1080, 720));
+        setResizable(false);
 
         Principal.setBackground(new java.awt.Color(122, 119, 116));
         Principal.setForeground(new java.awt.Color(139, 132, 132));
-
-        jButton1.setText("RF Informática");
-
-        jTextField1.setText("Digite o que procura");
-
-        jButton2.setText("Buscar");
-
-        jButton3.setText("Carrinho");
-
-        jButton4.setText("Cadastro");
+        Principal.setPreferredSize(new java.awt.Dimension(1080, 720));
 
         jButton5.setText("jButton5");
         jButton5.setPreferredSize(new java.awt.Dimension(200, 150));
@@ -110,22 +130,22 @@ public class Principal extends javax.swing.JFrame {
 
         NomeProduto8.setText("Nome Produto");
 
+        jTextField1.setText("Digite o que procura");
+
+        jButton1.setText("RF Informática");
+
+        jButton4.setText("Cadastro");
+
+        jButton2.setText("Buscar");
+
+        jButton3.setText("Carrinho");
+
         javax.swing.GroupLayout ProdutosLayout = new javax.swing.GroupLayout(Produtos);
         Produtos.setLayout(ProdutosLayout);
         ProdutosLayout.setHorizontalGroup(
             ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProdutosLayout.createSequentialGroup()
-                .addGap(173, 173, 173)
-                .addComponent(NomeProduto1)
-                .addGap(105, 105, 105)
-                .addComponent(NomeProduto2)
-                .addGap(122, 122, 122)
-                .addComponent(NomeProduto3)
-                .addGap(127, 127, 127)
-                .addComponent(NomeProduto4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProdutosLayout.createSequentialGroup()
-                .addContainerGap(118, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProdutosLayout.createSequentialGroup()
                         .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -155,11 +175,44 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(127, 127, 127)
                         .addComponent(NomeProduto8)
                         .addGap(154, 154, 154))))
+            .addGroup(ProdutosLayout.createSequentialGroup()
+                .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ProdutosLayout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addComponent(NomeProduto1)
+                        .addGap(105, 105, 105)
+                        .addComponent(NomeProduto2)
+                        .addGap(122, 122, 122)
+                        .addComponent(NomeProduto3)
+                        .addGap(127, 127, 127)
+                        .addComponent(NomeProduto4))
+                    .addGroup(ProdutosLayout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addComponent(jButton1)
+                        .addGap(12, 12, 12)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton2)
+                        .addGap(66, 66, 66)
+                        .addComponent(jButton3)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         ProdutosLayout.setVerticalGroup(
             ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ProdutosLayout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2))
+                    .addGroup(ProdutosLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton1)
+                                .addComponent(jButton4))
+                            .addComponent(jButton3))))
                 .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ProdutosLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
@@ -174,7 +227,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(NomeProduto2)
                     .addComponent(NomeProduto3)
                     .addComponent(NomeProduto4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(ProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -189,37 +242,21 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(41, 41, 41))
         );
 
+        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/visao/images/banner.jpg"))); // NOI18N
+        banner.setFocusable(false);
+
         javax.swing.GroupLayout PrincipalLayout = new javax.swing.GroupLayout(Principal);
         Principal.setLayout(PrincipalLayout);
         PrincipalLayout.setHorizontalGroup(
             PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PrincipalLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jButton1)
-                .addGap(214, 214, 214)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(100, 100, 100))
-            .addGroup(PrincipalLayout.createSequentialGroup()
-                .addGap(482, 482, 482)
-                .addComponent(jButton4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(Produtos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Produtos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(banner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         PrincipalLayout.setVerticalGroup(
             PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PrincipalLayout.createSequentialGroup()
-                .addComponent(jButton4)
-                .addGap(24, 24, 24)
-                .addGroup(PrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton1))
-                .addGap(137, 137, 137)
+                .addComponent(banner)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Produtos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -228,7 +265,7 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,13 +311,9 @@ public class Principal extends javax.swing.JFrame {
                 new Principal().setVisible(true);
             }
         });
-        
-        
-        
-        
-        
+
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel NomeProduto1;
@@ -293,6 +326,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel NomeProduto8;
     private javax.swing.JPanel Principal;
     private javax.swing.JPanel Produtos;
+    private javax.swing.JLabel banner;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -307,8 +341,5 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
-
-
-
 
 }
