@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class Cadastros {
     
-    BancoDeDados bd = new BancoDeDados();
+    BancoDeDados bd = BancoDeDados.getBancoDados();
     Scanner scanner = new Scanner(System.in);
     
     public void novoProduto(){
@@ -50,6 +50,7 @@ public class Cadastros {
                 if (produto.getCodigo() == bd.produtos[i].getCodigo()){
                     bd.produtos[i] = null;
                     System.out.println("Produto removido com sucesso");
+                    break;
                 }
             }
         }
