@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class LoginADM extends javax.swing.JFrame {
 
-    BancoDeDados bd = new BancoDeDados();
+    BancoDeDados bd = BancoDeDados.getBancoDados();
         
     public LoginADM() {
         initComponents();
