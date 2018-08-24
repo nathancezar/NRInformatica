@@ -32,7 +32,7 @@ public class BancoDeDados {
             "endereco", "Mouse Optico Razer 1800DPI Modelo 075 Nagius");
     
     
-    public void  adicionar(Produto produto){
+    public void  adicionarProduto(Produto produto){
         for( int i = 0; i < this.produtos.length; i++){
             if (produtos[i] == null ) {
                 produtos[i] = produtoP1;
@@ -40,8 +40,18 @@ public class BancoDeDados {
                 break;
             }
         }
-        //produtos[0] = produtoP1;
     }
+    
+    public void removerProduto(Produto produto){
+        for(int i = 0; i < this.produtos.length; i++){
+            if (produto.getCodigo() == produtos[i].getCodigo()){
+                produtos[i] = null;
+                System.out.println("Produto removido com sucesso");
+            }
+        }
+    }
+    
+            
     
     
     

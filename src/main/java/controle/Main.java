@@ -18,7 +18,7 @@ public class Main {
         Produto produtoP1 = new Produto(1000, 30, 49.90f, "Mouse Optico",
                 "endereco", "Mouse Optico Razer 1800DPI Modelo 075 Nagius");
 
-        bd.adicionar(produtoP1);
+        bd.adicionarProduto(produtoP1);
         System.out.println(bd.produtos[0].getNome());
     }
 
