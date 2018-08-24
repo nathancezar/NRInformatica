@@ -11,9 +11,34 @@ import controle.Produto;
 
 public final class BancoDeDados {
     
-    public Produto[] produtos = new Produto[100];
-    public Cliente[] clientes = new Cliente[50];
-    public Administrador adm = new Administrador("adm", "adm");      
+    private static BancoDeDados bd;
+    
+    public Produto[] produtos;
+    public Cliente[] clientes;
+    public Administrador adm;
+    
+    private BancoDeDados() { 
+        produtos = new Produto[100];
+        clientes = new Cliente[50];
+        adm = new Administrador("adm", "adm");
+    }
+    
+    public static synchronized BancoDeDados getBancoDados() {
+        if (bd == null) {
+            bd = new BancoDeDados();
+        }
+        return bd;
+    }
+
+    public Produto[] getProdutos() {
+        return produtos;
+    }
+
+    public Cliente[] getClientes() {
+        return clientes;
+    }
+
+    public Administrador getAdm() {
+        return adm;
+    } 
 }
-
-
