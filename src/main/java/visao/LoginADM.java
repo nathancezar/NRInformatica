@@ -126,8 +126,8 @@ public class LoginADM extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        if (jTextField1.getText().equals(bd.adm.getLogin()) && 
-                jPasswordField1.getText().equals(bd.adm.getSenha())){
+        if (jTextField1.getText().equals(bd.getAdm().getLogin()) && 
+                jPasswordField1.getText().equals(bd.getAdm().getSenha())){
             ControleEstoque controle = new ControleEstoque();
             controle.setVisible(true); // para visualizar a tela
             dispose(); // fecha tela anterior

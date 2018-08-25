@@ -25,7 +25,7 @@ public class Menu {
         System.out.println("Seja bem-vindo a NR Informática");
         System.out.println("");
         System.out.println("Veja nossos destaques:");
-        // funcao que retorna produtos aleatorios
+        System.out.println(busca.mostraProdutosDaLista(busca.buscaRandomicaDeProdutos(3)));
         System.out.println("--");
         System.out.println("1 - Ver todos os produtos");
         System.out.println("2 - Procurar produtos");

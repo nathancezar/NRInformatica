@@ -36,9 +36,10 @@ public class ControleDeBusca {
     //retorna um ArrayList com os produtos encontrados
     public ArrayList<Produto> buscaProdutoPorNome(String nome) {
         ArrayList<Produto> produtosEncontrados = new ArrayList<>();
-        for (short i = 0; bd.getProdutos()[i] != null; i++) {
-            if (bd.getProdutos()[i].getNome().toLowerCase().contains(nome.toLowerCase())) {
-                produtosEncontrados.add(bd.getProdutos()[i]);
+        for (Produto produto : bd.getProdutos()) {
+            if (produto != null
+                    && produto.getNome().toLowerCase().contains(nome.toLowerCase())) {
+                produtosEncontrados.add(produto);
             }
         }
         return produtosEncontrados;
@@ -48,9 +49,10 @@ public class ControleDeBusca {
     //retorna um ArrayList com os Clientes encontrados
     public ArrayList<Cliente> buscaClientePorNome(String nome) {
         ArrayList<Cliente> clientesEncontrados = new ArrayList<>();
-        for (short i = 0; i < bd.getClientes().length; i++) {
-            if (bd.getClientes()[i].getNome().toLowerCase().contains(nome.toLowerCase())) {
-                clientesEncontrados.add(bd.getClientes()[i]);
+        for (Cliente cliente : bd.getClientes()) {
+            if (cliente != null
+                    && cliente.getNome().toLowerCase().contains(nome.toLowerCase())) {
+                clientesEncontrados.add(cliente);
             }
         }
         return clientesEncontrados;
@@ -60,7 +62,7 @@ public class ControleDeBusca {
     //Retorna um Objeto Cliente
     public Cliente buscaClientePorCPF(int cpf) {
         for (Cliente cliente : bd.getClientes()) {
-            if (cliente.getCpf() == cpf) {
+            if (cliente != null && cliente.getCpf() == cpf) {
                 return cliente;
             }
         }
@@ -71,7 +73,7 @@ public class ControleDeBusca {
     // Retorna um Objeto Produto
     public Produto buscaProdutoPorCodigo(int codigo) {
         for (Produto p1 : bd.getProdutos()) {
-            if (p1.getCodigo() == codigo) {
+            if (p1 != null && p1.getCodigo() == codigo) {
                 return p1;
             }
         }
@@ -82,9 +84,10 @@ public class ControleDeBusca {
     //retorna um ArrayList com os produtos encontrados
     public ArrayList<Produto> buscaProdutoPorDescricao(String descricao) {
         ArrayList<Produto> produtosEncontrados = new ArrayList<>();
-        for (short i = 0; i < bd.getProdutos().length; i++) {
-            if (bd.getProdutos()[i].getDescricao().toLowerCase().contains(descricao.toLowerCase())) {
-                produtosEncontrados.add(bd.getProdutos()[i]);
+        for (Produto produto : bd.getProdutos()) {
+            if (produto != null
+                    && produto.getDescricao().toLowerCase().contains(descricao.toLowerCase())) {
+                produtosEncontrados.add(produto);
             }
         }
         return produtosEncontrados;
@@ -94,10 +97,10 @@ public class ControleDeBusca {
     //retorna um ArrayList com os produtos encontrados
     public ArrayList<Produto> buscaProdutoPorFaixaDePreco(int min, int max) {
         ArrayList<Produto> produtosEncontrados = new ArrayList<>();
-        for (short i = 0; i < bd.getProdutos().length; i++) {
-            if (bd.getProdutos()[i].getPreco() > min
-                    && bd.getProdutos()[i].getPreco() < max) {
-                produtosEncontrados.add(bd.getProdutos()[i]);
+        for (Produto produto : bd.getProdutos()) {
+            if (produto != null
+                    && produto.getPreco() > min && produto.getPreco() < max) {
+                produtosEncontrados.add(produto);
             }
         }
         return produtosEncontrados;
@@ -117,19 +120,26 @@ public class ControleDeBusca {
     public ArrayList<Produto> buscaRandomicaDeProdutos(int quantidadeDesejada) {
         Random random = new Random();
         ArrayList<Produto> produtosSorteados = new ArrayList<>();
-        for (int i = 0; i <= quantidadeDesejada; i++) {
-            produtosSorteados.add(bd.getProdutos()[random.nextInt(bd.getProdutos().length)]);
+        while (quantidadeDesejada > 0) {                        
+            Produto produtoSorteado = bd.getProdutos()[random.nextInt(bd.getProdutos().length)];
+            if (produtoSorteado != null &&
+                    !produtosSorteados.contains(produtoSorteado)) {
+                produtosSorteados.add(produtoSorteado);
+                quantidadeDesejada--;                      
+            }
         }
         return produtosSorteados;
     }
 
-    // Dado um array de produtos, printa seus dados
-    public void mostraProdutosDaLista(ArrayList<Produto> produtos) {
+    // Dado um array de produtos retorna uma string com os Dados
+    public String mostraProdutosDaLista(ArrayList<Produto> produtos) {
+        String mensagem = "";
         for (int i = 0; i < produtos.size(); i++) {
-            System.out.println("Cód: " + produtos.get(i).getCodigo()
+            mensagem += "Cód: " + produtos.get(i).getCodigo()
                     + " | Nome: " + produtos.get(i).getNome()
-                    + " | Preço: " + produtos.get(i).getPreco());
+                    + " | Preço: " + produtos.get(i).getPreco()+"\n";
         }
+        return mensagem;
     }
 
     public Produto[] procuraProdutoPorNome2(String nome) {
