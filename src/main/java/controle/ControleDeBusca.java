@@ -16,9 +16,10 @@ import java.util.Random;
 public class ControleDeBusca {
 
     private static ControleDeBusca busca;
-    private BancoDeDados bd;
+    private final BancoDeDados bd;
 
     private ControleDeBusca() {
+        bd = BancoDeDados.getBancoDados();
     }
 
     //Padrão Singleton usado para permitir apenas uma instância
@@ -35,7 +36,7 @@ public class ControleDeBusca {
     //retorna um ArrayList com os produtos encontrados
     public ArrayList<Produto> buscaProdutoPorNome(String nome) {
         ArrayList<Produto> produtosEncontrados = new ArrayList<>();
-        for (short i = 0; i < bd.getProdutos().length; i++) {
+        for (short i = 0; bd.getProdutos()[i] != null; i++) {
             if (bd.getProdutos()[i].getNome().toLowerCase().contains(nome.toLowerCase())) {
                 produtosEncontrados.add(bd.getProdutos()[i]);
             }
@@ -126,15 +127,15 @@ public class ControleDeBusca {
     public void mostraProdutosDaLista(ArrayList<Produto> produtos) {
         for (int i = 0; i < produtos.size(); i++) {
             System.out.println("Cód: " + produtos.get(i).getCodigo()
-                    + " | Nome: " + produtos.get(i).getNome() +
-                    " | Preço: " + produtos.get(i).getPreco());
+                    + " | Nome: " + produtos.get(i).getNome()
+                    + " | Preço: " + produtos.get(i).getPreco());
         }
     }
 
     public Produto[] procuraProdutoPorNome2(String nome) {
         Produto[] aux = new Produto[50];
         int j = 0;
-        for (Produto produto : bd.produtos) {
+        for (Produto produto : bd.getProdutos()) {
             if (produto == null) {
                 break;
             } else {
@@ -151,8 +152,8 @@ public class ControleDeBusca {
         int i = 0;
         while (produtos[i] != null) {
             System.out.println("Cód: " + produtos[i].getCodigo()
-                    + " | Nome: " + produtos[i].getNome() +
-                    " | Preço: " + produtos[i].getPreco());
+                    + " | Nome: " + produtos[i].getNome()
+                    + " | Preço: " + produtos[i].getPreco());
             i++;
         }
     }

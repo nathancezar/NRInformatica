@@ -13,9 +13,9 @@ public final class BancoDeDados {
     
     private static BancoDeDados bd;
     
-    public Produto[] produtos;
-    public Cliente[] clientes;
-    public Administrador adm;
+    private final Produto[] produtos;
+    private final Cliente[] clientes;
+    private final Administrador adm;
     
     private BancoDeDados() { 
         produtos = new Produto[100];

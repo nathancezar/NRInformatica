@@ -97,12 +97,12 @@ public class Menu {
         System.out.println("Digite o código do produto que deseja excluir:");
         cadastro.verProdutosCadastrados();
         int codProduto = scanner.nextInt();
-        for (int i = 0; i < bd.produtos.length; i++) {
-            if (bd.produtos[i].getCodigo() == codProduto) {
-                System.out.println("Você tem certeza que deseja exluir o produto " + bd.produtos[i].getNome() + "? (S/N");
+        for (int i = 0; i < bd.getProdutos().length; i++) {
+            if (bd.getProdutos()[i].getCodigo() == codProduto) {
+                System.out.println("Você tem certeza que deseja exluir o produto " + bd.getProdutos()[i].getNome() + "? (S/N");
                 String escolha = scanner.next();
                 if (escolha.equalsIgnoreCase("s")) {
-                    cadastro.removerProduto(bd.produtos[i]);
+                    cadastro.removerProduto(bd.getProdutos()[i]);
                     System.out.println("Produto removido com sucesso.");
                     menuAdm();
                 } else {
@@ -126,9 +126,9 @@ public class Menu {
             busca.mostraProdutosDaLista(buscados);
             System.out.println("Agora, digite o código do produto a ser editado.");
             int codProduto = scanner.nextInt();
-            for (int i = 0; i < bd.produtos.length; i++) {
-                if (bd.produtos[i].getCodigo() == codProduto) {
-                    menuEscolheEdicao(bd.produtos[i]);
+            for (int i = 0; i < bd.getProdutos().length; i++) {
+                if (bd.getProdutos()[i].getCodigo() == codProduto) {
+                    menuEscolheEdicao(bd.getProdutos()[i]);
                 } else {
                     System.out.println("Produto não encontrado");
                 }
@@ -176,19 +176,12 @@ public class Menu {
     private void menuProcurarProduto() {
         System.out.println("Pesquisar por nome: ");
         String nome = scanner.next();
-        Produto[] aux = new Produto[50];
-        int j = 0;
-
-        for (int i = 0; i < bd.produtos.length; i++) {
-            if (bd.produtos[i].getNome().toLowerCase().contains(nome)) {
-                aux[j] = bd.produtos[i];
-                j++;
-            }
-        }
-        for (int i = 0; i < j; i++) {
-            System.out.println("Cód: "+aux[i].getCodigo() +
-                    " | Nome: "+aux[i].getNome() + " | Preço: "+ aux[i].getPreco());
-        }
+        ArrayList<Produto> produtosEncontrados = busca.buscaProdutoPorNome(nome);
+        produtosEncontrados.forEach((produto2) -> {
+            System.out.println("Cód: " + produto2.getCodigo()
+                    + " | Nome: " + produto2.getNome()
+                    + " | Preço: " + produto2.getPreco());
+        });
     }
 }
 

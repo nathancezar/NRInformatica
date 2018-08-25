@@ -52,9 +52,9 @@ public class Cadastros {
     }
         
         public void  adicionarProduto(Produto produto){
-            for( int i = 0; i < bd.produtos.length; i++){
-                if (bd.produtos[i] == null ) {
-                    bd.produtos[i] = produto;
+            for( int i = 0; i < bd.getProdutos().length; i++){
+                if (bd.getProdutos()[i] == null ) {
+                    bd.getProdutos()[i] = produto;
                     System.out.println("Produto Adicionado com sucesso.");
                     break;
                 }
@@ -62,9 +62,9 @@ public class Cadastros {
         }
     
         public void removerProduto(Produto produto){
-            for(int i = 0; i < bd.produtos.length; i++){
-                if (produto.getCodigo() == bd.produtos[i].getCodigo()){
-                    bd.produtos[i] = null;
+            for(int i = 0; i < bd.getProdutos().length; i++){
+                if (produto.getCodigo() == bd.getProdutos()[i].getCodigo()){
+                    bd.getProdutos()[i] = null;
                     System.out.println("Produto removido com sucesso");
                     break;
                 }
@@ -72,10 +72,13 @@ public class Cadastros {
         }
         
         public void verProdutosCadastrados(){
-            for(int i = 0; i < bd.produtos.length; i++){
-                if (bd.produtos[i] != null){
-                    System.out.println("Produto "+ i + " | Nome: "+bd.produtos[i].getNome()+""
-                        + " | Código: "+bd.produtos[i].getCodigo() + " | Quantidade: "+bd.produtos[i].getQuantidade());
+            for(int i = 0; i < bd.getProdutos().length; i++){
+                if (bd.getProdutos()[i] != null){
+                    System.out.println("Produto "+ i
+                            + " | Nome: "+bd.getProdutos()[i].getNome()
+                            +""+ " | Código: "+bd.getProdutos()[i].getCodigo()
+                            + " | Quantidade: "
+                            +bd.getProdutos()[i].getQuantidade());
                 }
             }
         }
