@@ -14,9 +14,25 @@ import java.util.Scanner;
  */
 public class Cadastros {
     
-    BancoDeDados bd = BancoDeDados.getBancoDados();
-    Scanner scanner = new Scanner(System.in);
-    
+    private static Cadastros cadastrador;
+    BancoDeDados bd;
+    Scanner scanner ;
+
+    private Cadastros() {
+        bd = BancoDeDados.getBancoDados();
+        scanner = new Scanner(System.in);
+    }        
+        
+    //Padrão Singleton usado para permitir apenas uma instância
+    //da classe de Cadastros
+    // usado synchronized para evitar concorrencia na criação da instância
+    public static synchronized Cadastros getCadastros() {
+        if (cadastrador == null) {
+            cadastrador = new Cadastros();
+        }
+        return cadastrador;
+    }
+        
     public void novoProduto(){
         System.out.println("Nome do produto: ");
         String nome = scanner.next();

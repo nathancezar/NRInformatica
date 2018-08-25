@@ -23,6 +23,9 @@ public final class BancoDeDados {
         adm = new Administrador("adm", "adm");
     }
     
+    //Padrão Singleton usado para permitir apenas uma instância
+    //da classe Banco de Dados
+    // usado synchronized para evitar concorrencia na criação da instância
     public static synchronized BancoDeDados getBancoDados() {
         if (bd == null) {
             bd = new BancoDeDados();
