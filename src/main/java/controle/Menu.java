@@ -40,7 +40,7 @@ public class Menu {
                 cadastro.verProdutosCadastrados();
                 menuInicial();
             case 2:
-                System.out.println("procurar");
+                menuProcurarProduto();
                 menuInicial();// fazer funcao procurar produtos
             case 3:
                 System.out.println("carrinho");
@@ -119,7 +119,7 @@ public class Menu {
     private void editarProduto() {
         System.out.println("Procurar produto: (nome)");
         String nomeProduto = scanner.next();
-        ArrayList<Produto> buscados = busca.buscaProdutoPorNome(nomeProduto);
+        ArrayList<Produto> buscados = new ArrayList<>(); //busca.buscaProdutoPorNome(nomeProduto);
         if (buscados.get(0) == null) {
             System.out.println("Nenhum produto encontrado");
         } else {
@@ -173,4 +173,22 @@ public class Menu {
         }
     }
 
+    private void menuProcurarProduto() {
+        System.out.println("Pesquisar por nome: ");
+        String nome = scanner.next();
+        Produto[] aux = new Produto[50];
+        int j = 0;
+
+        for (int i = 0; i < bd.produtos.length; i++) {
+            if (bd.produtos[i].getNome().toLowerCase().contains(nome)) {
+                aux[j] = bd.produtos[i];
+                j++;
+            }
+        }
+        for (int i = 0; i < j; i++) {
+            System.out.println("Cód: "+aux[i].getCodigo() +
+                    " | Nome: "+aux[i].getNome() + " | Preço: "+ aux[i].getPreco());
+        }
+    }
 }
+

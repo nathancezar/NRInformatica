@@ -36,7 +36,7 @@ public class ControleDeBusca {
     public ArrayList<Produto> buscaProdutoPorNome(String nome) {
         ArrayList<Produto> produtosEncontrados = new ArrayList<>();        
         for (short i = 0; i < bd.getProdutos().length; i++) {
-            if (bd.getProdutos()[i].getNome().contains(nome)) {
+            if (bd.getProdutos()[i].getNome().toLowerCase().contains(nome)) {
                 produtosEncontrados.add(bd.getProdutos()[i]);
             }                                                         
         }
@@ -126,6 +126,31 @@ public class ControleDeBusca {
         for (int i = 0; i < produtos.size(); i++){
             System.out.println("Cód: "+produtos.get(i).getCodigo() +
                     " | Nome: "+produtos.get(i).getNome() + " | Preço: "+ produtos.get(i).getPreco());
+        }
+    }
+    
+    public Produto[] procuraProdutoPorNome2(String nome){
+        Produto[] aux = new Produto[50];
+        int j = 0;
+        for (int i = 0; i < bd.produtos.length; i++) {
+            if (bd.produtos[i] == null){
+                break;
+            } else {
+                 if(bd.produtos[i].getNome().toLowerCase().contains(nome)){
+                    aux[j] = bd.produtos[i];
+                    j++;
+                }
+            }
+        }
+        return aux;
+    }
+    
+    public void mostraProdutosDaLista2(Produto[] produtos) {
+        int i = 0;
+        while (produtos[i] != null) {
+             System.out.println("Cód: "+produtos[i].getCodigo() +
+                    " | Nome: "+produtos[i].getNome() + " | Preço: "+ produtos[i].getPreco());
+             i++;
         }
     }
 }
