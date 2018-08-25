@@ -15,10 +15,10 @@ import java.util.Scanner;
 public class Cadastros {
     
     private static Cadastros cadastrador;
-    BancoDeDados bd;
+    BancoDeDados bd = BancoDeDados.getBancoDados();
     Scanner scanner ;
 
-    private Cadastros() {
+    Cadastros() {
         bd = BancoDeDados.getBancoDados();
         scanner = new Scanner(System.in);
     }        

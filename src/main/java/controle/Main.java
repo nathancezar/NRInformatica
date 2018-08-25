@@ -37,7 +37,8 @@ public class Main {
         cadastro.adicionarProduto(produtoP4);
         cadastro.adicionarProduto(produtoP5);
         
-        cadastro.verProdutosCadastrados();
+        Menu menu = new Menu();
+        menu.menuInicial();
     }
 
 }

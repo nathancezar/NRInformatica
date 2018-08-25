@@ -120,4 +120,12 @@ public class ControleDeBusca {
         }
         return produtosSorteados;
     }
+    
+    // Dado um array de produtos, printa seus dados
+    public void mostraProdutosDaLista(ArrayList<Produto> produtos){
+        for (int i = 0; i < produtos.size(); i++){
+            System.out.println(i + " - Cód: "+produtos.get(i).getCodigo() +
+                    " | Nome: "+produtos.get(i).getNome() + " | Preço: "+ produtos.get(i).getPreco());
+        }
+    }
 }
