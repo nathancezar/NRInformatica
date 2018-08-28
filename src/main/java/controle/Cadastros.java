@@ -5,6 +5,7 @@
  */
 package controle;
 
+import modelo.Produto;
 import bancoDeDados.BancoDeDados;
 import java.util.Scanner;
 

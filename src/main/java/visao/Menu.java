@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controle;
+package visao;
 
+import modelo.Produto;
 import bancoDeDados.BancoDeDados;
+import controle.Cadastros;
+import controle.ControleDeBusca;
 import java.util.ArrayList;
 import java.util.Scanner;
+import modelo.Carrinho;
 
 /**
  *
@@ -19,10 +23,11 @@ public class Menu {
     Cadastros cadastro = Cadastros.getCadastros();
     BancoDeDados bd = BancoDeDados.getBancoDados();
     ControleDeBusca busca = ControleDeBusca.getControleBusca();
+    Carrinho carrinho = new Carrinho();
 
     public void menuInicial() {
 
-        System.out.println("Seja bem-vindo a NR Informática");
+        System.out.println("\nSeja bem-vindo a NR Informática");
         System.out.println("");
         System.out.println("Veja nossos destaques:");
         System.out.println(busca.mostraProdutosDaLista(busca.buscaRandomicaDeProdutos(3)));
@@ -41,10 +46,10 @@ public class Menu {
                 menuInicial();
             case 2:
                 menuProcurarProduto();
-                menuInicial();// fazer funcao procurar produtos
+                menuInicial();
             case 3:
-                System.out.println("carrinho");
-                menuInicial(); // fazer funcao carrinho
+                visualizarCarrinho();
+                menuInicial();
             case 4:
                 menuAdmLogin();
                 menuInicial();
@@ -182,6 +187,26 @@ public class Menu {
                     + " | Nome: " + produto2.getNome()
                     + " | Preço: " + produto2.getPreco());
         });
+        menuColocarNoCarrinho(produtosEncontrados);
+    }
+    
+    private void menuColocarNoCarrinho(ArrayList<Produto> lista) {
+        System.out.println("Deseja colocar algum produto encontrado no carrinho? (S/N)");
+        String resposta = scanner.next();
+        if (resposta.equalsIgnoreCase("S")) {
+            System.out.println("Insira o codigo do produto desejado.");
+            resposta = scanner.next();
+            Produto produtoDesejado = busca.buscaProdutoPorCodigo(Integer.parseInt(resposta));
+            carrinho.adicionarProduto(produtoDesejado);
+            System.out.println(produtoDesejado.getNome() + " adicionado com sucesso!");
+        } else {
+            System.out.println("Voltando ao Menu.");
+        }
+        System.out.println("  -----------------------------------  ");
+    }
+    
+    private void visualizarCarrinho(){        
+        System.out.println(this.carrinho.mostrarProdutos());
     }
 }
 

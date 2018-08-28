@@ -5,6 +5,8 @@
  */
 package controle;
 
+import modelo.Cliente;
+import modelo.Produto;
 import bancoDeDados.BancoDeDados;
 import java.util.ArrayList;
 import java.util.Random;

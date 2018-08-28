@@ -5,6 +5,9 @@
  */
 package controle;
 
+import visao.Menu;
+import modelo.Produto;
+
 /**
  *
  * @author nathancezar

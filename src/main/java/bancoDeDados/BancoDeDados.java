@@ -5,9 +5,9 @@
  */
 package bancoDeDados;
 
-import controle.Administrador;
-import controle.Cliente;
-import controle.Produto;
+import modelo.Administrador;
+import modelo.Cliente;
+import modelo.Produto;
 
 public final class BancoDeDados {
     
