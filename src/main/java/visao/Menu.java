@@ -85,15 +85,20 @@ public class Menu {
         switch (escolha) {
             case 1:
                 cadastro.novoProduto();
+                System.out.println("Produto Adicionado com sucesso.");
+                menuAdm();
                 break;
             case 2:
                 editarProduto();
+                menuAdm();
                 break;
             case 3:
                 menuExcluirProduto();
+                System.out.println("Produto removido com sucesso");
+                menuAdm();
                 break;
             case 0:
-                menuInicial();
+                menuInicial();                
                 break;
         }
     }
@@ -124,8 +129,13 @@ public class Menu {
     private void editarProduto() {
         System.out.println("Procurar produto: (nome)");
         String nomeProduto = scanner.next();
-        ArrayList<Produto> buscados = new ArrayList<>(); //busca.buscaProdutoPorNome(nomeProduto);
-        if (buscados.get(0) == null) {
+        ArrayList<Produto> buscados = busca.buscaProdutoPorNome(nomeProduto);
+        buscados.forEach((produto2) -> {
+            System.out.println("Cód: " + produto2.getCodigo()
+                    + " | Nome: " + produto2.getNome()
+                    + " | Preço: " + produto2.getPreco());
+        });
+        if (buscados.get(0) == null) { //armazenar
             System.out.println("Nenhum produto encontrado");
         } else {
             busca.mostraProdutosDaLista(buscados);
@@ -133,7 +143,10 @@ public class Menu {
             int codProduto = scanner.nextInt();
             for (int i = 0; i < bd.getProdutos().length; i++) {
                 if (bd.getProdutos()[i].getCodigo() == codProduto) {
-                    menuEscolheEdicao(bd.getProdutos()[i]);
+                    Produto prod = bd.getProdutos()[i];
+                    menuEscolheEdicao(prod, codProduto);
+                    cadastro.removerProduto(bd.getProdutos()[i]);
+                    break;
                 } else {
                     System.out.println("Produto não encontrado");
                 }
@@ -142,7 +155,7 @@ public class Menu {
 
     }
 
-    private void menuEscolheEdicao(Produto produto) {
+    private void menuEscolheEdicao(Produto produto, int cod) {
         System.out.println("1 - Editar nome");
         System.out.println("2 - Editar código");
         System.out.println("3 - Editar preço");
@@ -157,25 +170,32 @@ public class Menu {
                 System.out.println("Digite o novo nome: ");
                 String nome = scanner.next();
                 produto.setNome(nome);
+                break;
             case 2:
                 System.out.println("Digite o novo código: ");
                 int codigo = scanner.nextInt();
                 produto.setCodigo(codigo);
+                break;
             case 3:
                 System.out.println("Digite o novo preço");
                 float preco = scanner.nextFloat();
                 produto.setPreco(preco);
+                break;
             case 4:
                 System.out.println("Digite a nova descrição");
                 String descricao = scanner.next();
                 produto.setDescricao(descricao);
+                break;
             case 5:
                 System.out.println("Digite a nova quantidade");
                 int qtd = scanner.nextInt();
                 produto.setQuantidade(qtd);
-            case 0:
+                break;
+            default:
                 editarProduto();
+                break;
         }
+        cadastro.adicionarProduto(produto);
     }
 
     private void menuProcurarProduto() {

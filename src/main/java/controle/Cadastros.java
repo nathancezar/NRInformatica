@@ -55,8 +55,7 @@ public class Cadastros {
         public void  adicionarProduto(Produto produto){
             for( int i = 0; i < bd.getProdutos().length; i++){
                 if (bd.getProdutos()[i] == null ) {
-                    bd.getProdutos()[i] = produto;
-                    System.out.println("Produto Adicionado com sucesso.");
+                    bd.getProdutos()[i] = produto;                    
                     break;
                 }
             }
@@ -65,8 +64,7 @@ public class Cadastros {
         public void removerProduto(Produto produto){
             for(int i = 0; i < bd.getProdutos().length; i++){
                 if (produto.getCodigo() == bd.getProdutos()[i].getCodigo()){
-                    bd.getProdutos()[i] = null;
-                    System.out.println("Produto removido com sucesso");
+                    bd.getProdutos()[i] = null;                    
                     break;
                 }
             }
