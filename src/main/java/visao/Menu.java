@@ -42,7 +42,7 @@ public class Menu {
 
         switch (escolha) {
             case 1:
-                cadastro.verProdutosCadastrados();
+                visualizarProdutos();
                 menuInicial();
             case 2:
                 menuProcurarProduto();
@@ -105,14 +105,14 @@ public class Menu {
 
     private void menuExcluirProduto() {
         System.out.println("Digite o código do produto que deseja excluir:");
-        cadastro.verProdutosCadastrados();
+        visualizarProdutos();
         int codProduto = scanner.nextInt();
-        for (int i = 0; i < bd.getProdutos().length; i++) {
-            if (bd.getProdutos()[i].getCodigo() == codProduto) {
-                System.out.println("Você tem certeza que deseja exluir o produto " + bd.getProdutos()[i].getNome() + "? (S/N");
+        for (int i = 0; i < bd.getProdutos().size(); i++) {
+            if (bd.getProdutos().get(i).getCodigo() == codProduto) {
+                System.out.println("Você tem certeza que deseja exluir o produto " + bd.getProdutos().get(i).getNome() + "? (S/N");
                 String escolha = scanner.next();
                 if (escolha.equalsIgnoreCase("s")) {
-                    cadastro.removerProduto(bd.getProdutos()[i]);
+                    cadastro.removerProduto(bd.getProdutos().get(i));
                     System.out.println("Produto removido com sucesso.");
                     menuAdm();
                 } else {
@@ -141,11 +141,9 @@ public class Menu {
             busca.mostraProdutosDaLista(buscados);
             System.out.println("Agora, digite o código do produto a ser editado.");
             int codProduto = scanner.nextInt();
-            for (int i = 0; i < bd.getProdutos().length; i++) {
-                if (bd.getProdutos()[i].getCodigo() == codProduto) {
-                    Produto prod = bd.getProdutos()[i];
-                    menuEscolheEdicao(prod, codProduto);
-                    cadastro.removerProduto(bd.getProdutos()[i]);
+            for (int i = 0; i < bd.getProdutos().size(); i++) {
+                if (bd.getProdutos().get(i).getCodigo() == codProduto) {                    
+                    menuEscolheEdicao(bd.getProdutos().get(i), codProduto);
                     break;
                 } else {
                     System.out.println("Produto não encontrado");
@@ -195,7 +193,6 @@ public class Menu {
                 editarProduto();
                 break;
         }
-        cadastro.adicionarProduto(produto);
     }
 
     private void menuProcurarProduto() {
@@ -227,6 +224,10 @@ public class Menu {
     
     private void visualizarCarrinho(){        
         System.out.println(this.carrinho.mostrarProdutos());
+    }
+    
+    private void visualizarProdutos() {
+        System.out.println(this.bd.getProdutos().toString());
     }
 }
 

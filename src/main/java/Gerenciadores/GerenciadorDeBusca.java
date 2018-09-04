@@ -38,12 +38,10 @@ public class GerenciadorDeBusca {
     //retorna um ArrayList com os produtos encontrados
     public ArrayList<Produto> buscaProdutoPorNome(String nome) {
         ArrayList<Produto> produtosEncontrados = new ArrayList<>();
-        for (Produto produto : bd.getProdutos()) {
-            if (produto != null
-                    && produto.getNome().toLowerCase().contains(nome.toLowerCase())) {
-                produtosEncontrados.add(produto);
-            }
-        }
+        bd.getProdutos().stream().filter((produto) -> (produto != null
+                && produto.getNome().toLowerCase().contains(nome.toLowerCase()))).forEachOrdered((produto) -> {
+            produtosEncontrados.add(produto);
+        });
         return produtosEncontrados;
     }
 
@@ -51,12 +49,10 @@ public class GerenciadorDeBusca {
     //retorna um ArrayList com os Clientes encontrados
     public ArrayList<Cliente> buscaClientePorNome(String nome) {
         ArrayList<Cliente> clientesEncontrados = new ArrayList<>();
-        for (Cliente cliente : bd.getClientes()) {
-            if (cliente != null
-                    && cliente.getNome().toLowerCase().contains(nome.toLowerCase())) {
-                clientesEncontrados.add(cliente);
-            }
-        }
+        bd.getClientes().stream().filter((cliente) -> (cliente != null
+                && cliente.getNome().toLowerCase().contains(nome.toLowerCase()))).forEachOrdered((cliente) -> {
+            clientesEncontrados.add(cliente);
+        });
         return clientesEncontrados;
     }
 
@@ -122,12 +118,11 @@ public class GerenciadorDeBusca {
     public ArrayList<Produto> buscaRandomicaDeProdutos(int quantidadeDesejada) {
         Random random = new Random();
         ArrayList<Produto> produtosSorteados = new ArrayList<>();
-        while (quantidadeDesejada > 0) {                        
-            Produto produtoSorteado = bd.getProdutos()[random.nextInt(bd.getProdutos().length)];
-            if (produtoSorteado != null &&
-                    !produtosSorteados.contains(produtoSorteado)) {
+        while (quantidadeDesejada > 0) {
+            Produto produtoSorteado = bd.getProdutos().get(random.nextInt(bd.getProdutos().size()));
+            if (!produtosSorteados.contains(produtoSorteado)) {
                 produtosSorteados.add(produtoSorteado);
-                quantidadeDesejada--;                      
+                quantidadeDesejada--;
             }
         }
         return produtosSorteados;
@@ -139,7 +134,7 @@ public class GerenciadorDeBusca {
         for (int i = 0; i < produtos.size(); i++) {
             mensagem += "Cód: " + produtos.get(i).getCodigo()
                     + " | Nome: " + produtos.get(i).getNome()
-                    + " | Preço: " + produtos.get(i).getPreco()+"\n";
+                    + " | Preço: " + produtos.get(i).getPreco() + "\n";
         }
         return mensagem;
     }

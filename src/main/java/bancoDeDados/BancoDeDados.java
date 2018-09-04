@@ -5,6 +5,7 @@
  */
 package bancoDeDados;
 
+import java.util.LinkedList;
 import modelo.Administrador;
 import modelo.Cliente;
 import modelo.Produto;
@@ -13,13 +14,13 @@ public final class BancoDeDados {
     
     private static BancoDeDados bd;
     
-    private final Produto[] produtos;
-    private final Cliente[] clientes;
-    private final Administrador adm;
+    private LinkedList<Produto>  produtos;
+    private LinkedList<Cliente> clientes;
+    private Administrador adm;
     
     private BancoDeDados() { 
-        produtos = new Produto[100];
-        clientes = new Cliente[50];
+        produtos = new LinkedList();
+        clientes = new LinkedList();
         adm = new Administrador("adm", "adm");
     }
     
@@ -33,14 +34,14 @@ public final class BancoDeDados {
         return bd;
     }
 
-    public Produto[] getProdutos() {
+    public LinkedList<Produto> getProdutos() {
         return produtos;
     }
 
-    public Cliente[] getClientes() {
+    public LinkedList<Cliente> getClientes() {
         return clientes;
     }
-
+    
     public Administrador getAdm() {
         return adm;
     } 
