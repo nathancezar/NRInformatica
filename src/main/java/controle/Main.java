@@ -5,6 +5,7 @@
  */
 package controle;
 
+import Gerenciadores.Cadastros;
 import visao.Menu;
 import modelo.Produto;
 

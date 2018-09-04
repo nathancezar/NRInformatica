@@ -7,8 +7,8 @@ package visao;
 
 import modelo.Produto;
 import bancoDeDados.BancoDeDados;
-import controle.Cadastros;
-import controle.ControleDeBusca;
+import Gerenciadores.Cadastros;
+import Gerenciadores.GerenciadorDeBusca;
 import java.util.ArrayList;
 import java.util.Scanner;
 import modelo.Carrinho;
@@ -22,7 +22,7 @@ public class Menu {
     Scanner scanner = new Scanner(System.in);
     Cadastros cadastro = Cadastros.getCadastros();
     BancoDeDados bd = BancoDeDados.getBancoDados();
-    ControleDeBusca busca = ControleDeBusca.getControleBusca();
+    GerenciadorDeBusca busca = GerenciadorDeBusca.getControleBusca();
     Carrinho carrinho = new Carrinho();
 
     public void menuInicial() {

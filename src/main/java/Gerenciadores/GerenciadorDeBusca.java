@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controle;
+package Gerenciadores;
 
 import modelo.Cliente;
 import modelo.Produto;
@@ -15,21 +15,21 @@ import java.util.Random;
  *
  * @author nathancezar
  */
-public class ControleDeBusca {
+public class GerenciadorDeBusca {
 
-    private static ControleDeBusca busca;
+    private static GerenciadorDeBusca busca;
     private final BancoDeDados bd;
 
-    private ControleDeBusca() {
+    private GerenciadorDeBusca() {
         bd = BancoDeDados.getBancoDados();
     }
 
     //Padrão Singleton usado para permitir apenas uma instância
     //da classe de Controle de Busca
     // usado synchronized para evitar concorrencia na criação da instância
-    public static synchronized ControleDeBusca getControleBusca() {
+    public static synchronized GerenciadorDeBusca getControleBusca() {
         if (busca == null) {
-            busca = new ControleDeBusca();
+            busca = new GerenciadorDeBusca();
         }
         return busca;
     }

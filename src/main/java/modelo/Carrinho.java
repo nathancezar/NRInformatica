@@ -5,7 +5,7 @@
  */
 package modelo;
 
-import controle.ControleDeBusca;
+import Gerenciadores.GerenciadorDeBusca;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +16,7 @@ public class Carrinho {
 
     ArrayList<Produto> listaDeProdutos;
     Cliente clienteDoCarrinho;
-    ControleDeBusca busca = ControleDeBusca.getControleBusca();
+    GerenciadorDeBusca busca = GerenciadorDeBusca.getControleBusca();
 
     public Carrinho() {
         this.listaDeProdutos = new ArrayList<>();
