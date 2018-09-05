@@ -70,5 +70,13 @@ public class Produto {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    
+
+    @Override
+    public String toString() {
+        String msg = "Produto Indisponível";
+        if (this.quantidade > 0) {
+            msg = "Produto Disponível";
+        }
+        return "Código: " + codigo + " | Nome: " + nome + " | preco: " + preco + " | " + msg;
+    }         
 }

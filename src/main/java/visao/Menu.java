@@ -227,7 +227,10 @@ public class Menu {
     }
     
     private void visualizarProdutos() {
-        System.out.println(this.bd.getProdutos().toString());
+        bd.getProdutos().forEach((produto) -> {
+            System.out.println(produto.toString());
+        });
+                
     }
 }
 
