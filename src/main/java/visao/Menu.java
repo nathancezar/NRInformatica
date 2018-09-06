@@ -9,6 +9,7 @@ import modelo.Produto;
 import bancoDeDados.BancoDeDados;
 import Gerenciadores.Cadastros;
 import Gerenciadores.GerenciadorDeBusca;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import modelo.Carrinho;
@@ -24,6 +25,7 @@ public class Menu {
     BancoDeDados bd = BancoDeDados.getBancoDados();
     GerenciadorDeBusca busca = GerenciadorDeBusca.getControleBusca();
     Carrinho carrinho = new Carrinho();
+    DecimalFormat df = new DecimalFormat("#.00");
 
     public void menuInicial() {
 
@@ -133,7 +135,7 @@ public class Menu {
         buscados.forEach((produto2) -> {
             System.out.println("Cód: " + produto2.getCodigo()
                     + " | Nome: " + produto2.getNome()
-                    + " | Preço: " + produto2.getPreco());
+                    + " | Preço: " + df.format(produto2.getPreco()));
         });
         if (buscados.get(0) == null) { //armazenar
             System.out.println("Nenhum produto encontrado");
@@ -202,7 +204,7 @@ public class Menu {
         produtosEncontrados.forEach((produto2) -> {
             System.out.println("Cód: " + produto2.getCodigo()
                     + " | Nome: " + produto2.getNome()
-                    + " | Preço: " + produto2.getPreco());
+                    + " | Preço: " + df.format(produto2.getPreco()));
         });
         menuColocarNoCarrinho(produtosEncontrados);
     }
@@ -214,7 +216,9 @@ public class Menu {
             System.out.println("Insira o codigo do produto desejado.");
             resposta = scanner.next();
             Produto produtoDesejado = busca.buscaProdutoPorCodigo(Integer.parseInt(resposta));
-            carrinho.adicionarProduto(produtoDesejado);
+            System.out.println("Quantos " + produtoDesejado.getNome() + " gostaia de comprar? ");
+            resposta = scanner.next();
+            carrinho.adicionarProduto(produtoDesejado, Integer.parseInt(resposta));
             System.out.println(produtoDesejado.getNome() + " adicionado com sucesso!");
         } else {
             System.out.println("Voltando ao Menu.");

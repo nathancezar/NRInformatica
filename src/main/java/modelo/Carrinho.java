@@ -6,10 +6,12 @@
 package modelo;
 
 import Gerenciadores.GerenciadorDeBusca;
-import Gerenciadores.Promocoes;
 import java.util.ArrayList;
 import Gerenciadores.Promocoes;
 import bancoDeDados.BancoDeDados;
+import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,6 +24,7 @@ public class Carrinho {
     GerenciadorDeBusca busca = GerenciadorDeBusca.getControleBusca();
     BancoDeDados bd = BancoDeDados.getBancoDados();
     Promocoes promocao = new Promocoes();
+    DecimalFormat df = new DecimalFormat("#.00");
     private float valorTotal;
 
     public Carrinho() {
@@ -42,13 +45,23 @@ public class Carrinho {
         this.clienteDoCarrinho = clienteDoCarrinho;
     }
 
-    public boolean adicionarProduto(Produto produto, int quantidade) {
-        this.getListaDeProdutos().add(produto);
-        this.valorTotal += produto.getPreco();
+    public synchronized boolean adicionarProduto(Produto produto, int quantidade){
         if (verificaDisponibilidade(produto, quantidade)) {
-            int i = bd.getProdutos().indexOf(produto);
-            bd.getProdutos().get(i).setQuantidade(bd.getProdutos().get(i).getQuantidade() - quantidade);
-            promocao.leve3pague2(this);
+            int index = bd.getProdutos().indexOf(produto); 
+            Produto produtoNovo = null;
+            try {
+                produtoNovo = bd.getProdutos().get(index).clone();
+                System.out.println(produtoNovo.toString());
+            } catch (CloneNotSupportedException ex) {
+                Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+            produtoNovo.setQuantidade(quantidade);
+            this.getListaDeProdutos().add(produtoNovo);
+            this.valorTotal += produtoNovo.getPreco()*quantidade;           
+            bd.getProdutos().get(index).setQuantidade(
+                    bd.getProdutos().get(index).getQuantidade() - quantidade);
+            promocao.leve3pague2(this, produtoNovo);
             return true;
         }
         return false;
@@ -62,9 +75,8 @@ public class Carrinho {
         this.valorTotal = valorTotal;
     }
 
-    public void removerProduto(Produto produto) {
-        if (this.listaDeProdutos.contains(
-                busca.buscaProdutoPorCodigo(produto.getCodigo()))) {
+    public synchronized void removerProduto(Produto produto) {
+        if (this.listaDeProdutos.contains(produto)) {
             this.listaDeProdutos.remove(produto);
             this.valorTotal -= produto.getPreco();
         }
@@ -73,13 +85,13 @@ public class Carrinho {
     public boolean verificaDisponibilidade(Produto produto, int quantidade) {
         return (produto.getQuantidade() >= quantidade);
     }
-
+      
     public String mostrarProdutos() {
         String mensagem = "\nProdutos atualmente no Carrinho: \n --- \n";
         for (Produto produto : listaDeProdutos) {
             mensagem += produto.toString() + "\n";
         }
-        mensagem += "Valor Total: " + valorTotal;
+        mensagem += "Valor Total: " + df.format(valorTotal) + "\n";
         return mensagem;
     }
 }

@@ -5,16 +5,19 @@
  */
 package modelo;
 
-public class Produto {
-    
+import java.text.DecimalFormat;
+
+public class Produto implements Cloneable{
+
     private int codigo, quantidade;
     private float preco;
     private String nome, endereco_imagem, descricao;
-    
-    public Produto(){
+    DecimalFormat df = new DecimalFormat("#.00");
+
+    public Produto() {
     }
-    
-    public Produto(int codigo,int quantidade, float preco, String nome, String endereco_imagem, String descricao) {
+
+    public Produto(int codigo, int quantidade, float preco, String nome, String endereco_imagem, String descricao) {
         this.codigo = codigo;
         this.quantidade = quantidade;
         this.preco = preco;
@@ -26,7 +29,7 @@ public class Produto {
     public int getCodigo() {
         return codigo;
     }
-    
+
     public int getQuantidade() {
         return quantidade;
     }
@@ -50,7 +53,7 @@ public class Produto {
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
-    
+
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
@@ -70,13 +73,19 @@ public class Produto {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+    
+    @Override
+    public Produto clone() throws CloneNotSupportedException {
+        return (Produto) super.clone();
+    }
 
     @Override
     public String toString() {
         String msg = "Produto Indisponível";
         if (this.quantidade > 0) {
-            msg = "Produto Disponível";
+            msg = "Quantidade Disponível: " + this.getQuantidade();
         }
-        return "Código: " + codigo + " | Nome: " + nome + " | preco: " + preco + " | " + msg;
-    }         
+        return "Código: " + codigo + " | Nome: " + nome + " | preco: "
+                + df.format(preco) + " | " + msg;
+    }
 }
