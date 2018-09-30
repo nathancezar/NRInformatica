@@ -164,4 +164,15 @@ public class GerenciadorDeBusca {
             i++;
         }
     }
+    
+    // verifica se existe, atualmente no Estoque, um produto com
+    // o código passado
+    public boolean verificaSeCodigoExiste(int codigo) {
+        for (Produto produto : bd.getProdutos()) {
+            if (codigo == produto.getCodigo()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

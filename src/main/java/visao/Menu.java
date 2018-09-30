@@ -36,9 +36,10 @@ public class Menu {
         System.out.println("--");
         System.out.println("1 - Ver todos os produtos");
         System.out.println("2 - Procurar produtos");
-        System.out.println("3 - Visualizar carrinho");
-        System.out.println("4 - Entrar como administrador");
-        System.out.println("5 - Sair");
+        System.out.println("3 - Inserir um Produto no carrinho");
+        System.out.println("4 - Visualizar carrinho");
+        System.out.println("5 - Entrar como administrador");
+        System.out.println("6 - Sair");
 
         int escolha = scanner.nextInt();
 
@@ -50,12 +51,15 @@ public class Menu {
                 menuProcurarProduto();
                 menuInicial();
             case 3:
-                visualizarCarrinho();
+                menuColocarNoCarrinhoPorCodigo();
                 menuInicial();
             case 4:
-                menuAdmLogin();
+                visualizarCarrinho();
                 menuInicial();
             case 5:
+                menuAdmLogin();
+                menuInicial();
+            case 6:
                 System.exit(0);
 
         }
@@ -208,6 +212,23 @@ public class Menu {
         });
         menuColocarNoCarrinho(produtosEncontrados);
     }
+    
+    // Insere um produto no carrinho, verificando se o codigo passado é válido
+    private void menuColocarNoCarrinhoPorCodigo() {
+        System.out.println("Digite o codigo do produto desejado");
+        String resposta = scanner.next();
+        if (busca.verificaSeCodigoExiste(Integer.parseInt(resposta))) {            
+            Produto produtoDesejado = busca.buscaProdutoPorCodigo(Integer.parseInt(resposta));
+            System.out.println("Quantos " + produtoDesejado.getNome() + " gostaia de comprar? ");
+            resposta = scanner.next();
+            carrinho.adicionarProduto(produtoDesejado, Integer.parseInt(resposta));
+            System.out.println(produtoDesejado.getNome() + " adicionado com sucesso!");
+        } else {
+            System.out.println("Código incorreto.");
+        }
+        System.out.println("  -----------------------------------  ");
+    }
+    
     
     private void menuColocarNoCarrinho(ArrayList<Produto> lista) {
         System.out.println("Deseja colocar algum produto encontrado no carrinho? (S/N)");
