@@ -6,8 +6,12 @@
 package controle;
 
 import Gerenciadores.Cadastros;
+import modelo.Servico;
 import visao.Menu;
 import modelo.Produto;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -33,13 +37,24 @@ public class Main {
         
         Produto produtoP5 = new Produto(1004, 3, 49.90f, "Pendrive Sandisk 8GB",
                 "endereco", "Mouse Optico Razer 1800DPI Modelo 075 Nagius");
-        
+
+        Date data1 = new Date(2018, 10, 10, 10, 00);
+        Date data2 = new Date(2018, 10, 10, 10, 30);
+        Date data3 = new Date(2018, 10, 10, 11, 00);
+        ArrayList<Date> datas = new ArrayList<>();
+        datas.add(data1);
+
+        Servico s1 = new Servico(2000, "Formatação para Windows 10", datas , 79.90f);
+        Servico s2 = new Servico(2001, "Instalçao pacote office 2016", datas, 59.90f);
+
  
         cadastro.adicionarProduto(produtoP1);
         cadastro.adicionarProduto(produtoP2);
         cadastro.adicionarProduto(produtoP3);
         cadastro.adicionarProduto(produtoP4);
         cadastro.adicionarProduto(produtoP5);
+        cadastro.adicionarServico(s1);
+        cadastro.adicionarServico(s2);
         
         Menu menu = new Menu();
         menu.menuInicial();

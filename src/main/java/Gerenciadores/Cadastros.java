@@ -7,6 +7,10 @@ package Gerenciadores;
 
 import modelo.Produto;
 import bancoDeDados.BancoDeDados;
+import modelo.Servico;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -52,8 +56,21 @@ public class Cadastros {
 
     }
 
+    public void criarNovoServico(int codigo, String nome, ArrayList<Date> datas, float preco) {
+        Servico servico = new Servico(codigo, nome, datas, preco);
+        adicionarServico(servico);
+    }
+
     public void adicionarProduto(Produto produto) {
         bd.getProdutos().add(produto);
+    }
+
+    public void adicionarServico(Servico servico) {
+        bd.getServicos().add(servico);
+    }
+
+    public void removerServico(Servico servico) {
+        bd.getServicos().remove(servico);
     }
 
     public void removerProduto(Produto produto) {

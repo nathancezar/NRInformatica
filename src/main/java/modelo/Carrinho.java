@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import Gerenciadores.Promocoes;
 import bancoDeDados.BancoDeDados;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Timer;
@@ -22,6 +23,7 @@ import java.util.TimerTask;
 public class Carrinho {
 
     private ArrayList<Produto> listaDeProdutos;
+    private ArrayList<Servico> listaDeServicos;
     private Cliente clienteDoCarrinho;
     private GerenciadorDeBusca busca = GerenciadorDeBusca.getControleBusca();
     private BancoDeDados bd = BancoDeDados.getBancoDados();
@@ -33,6 +35,7 @@ public class Carrinho {
 
     public Carrinho() {
         this.listaDeProdutos = new ArrayList<>();
+        this.listaDeServicos = new ArrayList<>();
         this.clienteDoCarrinho = new Cliente();
         this.valorTotal = 0;
     }
@@ -40,6 +43,8 @@ public class Carrinho {
     public ArrayList<Produto> getListaDeProdutos() {
         return listaDeProdutos;
     }
+
+    public ArrayList<Servico> getListaDeServicos() { return listaDeServicos; }
 
     public Cliente getClienteDoCarrinho() {
         return clienteDoCarrinho;
@@ -91,6 +96,20 @@ public class Carrinho {
         return false;
     }
 
+    public synchronized boolean adicionarServicoNoCarrinho(Servico servico, Date data) {
+        Servico servicoNoCarrinho = servico;
+        ArrayList<Date> datasDoServico = new ArrayList<>();
+        datasDoServico.add(data);
+        servicoNoCarrinho.setDatas(datasDoServico);
+        removeDataDoServicoEmEstoque(servico, data);
+        return true;
+    }
+
+    private void removeDataDoServicoEmEstoque(Servico servico, Date data) {
+        int indice = bd.getServicos().indexOf(servico);
+        bd.getServicos().get(indice).getDatas().remove(data);
+    }
+
     // remove a quantidade de produtos que o cliente colocou no carrinho
     private void removeQuantidadeDoEstoque(Produto produto, int quantidade) {
         int index = bd.getProdutos().indexOf(produto);
@@ -109,6 +128,10 @@ public class Carrinho {
             Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);
         }
         return produtoNovo;
+    }
+
+    private Servico clonarServico (Servico servico) {
+        return null;
     }
 
     // remove o produto do carrinho e retorna novamente a quantidade

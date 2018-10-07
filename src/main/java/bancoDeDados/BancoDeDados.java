@@ -9,18 +9,21 @@ import java.util.LinkedList;
 import modelo.Administrador;
 import modelo.Cliente;
 import modelo.Produto;
+import modelo.Servico;
 
 public final class BancoDeDados {
     
     private static BancoDeDados bd;
     
     private LinkedList<Produto>  produtos;
+    private LinkedList<Servico> servicos;
     private LinkedList<Cliente> clientes;
     private Administrador adm;
     
     private BancoDeDados() { 
         produtos = new LinkedList();
         clientes = new LinkedList();
+        servicos = new LinkedList();
         adm = new Administrador("adm", "adm");
     }
     
@@ -37,6 +40,8 @@ public final class BancoDeDados {
     public LinkedList<Produto> getProdutos() {
         return produtos;
     }
+
+    public LinkedList<Servico> getServicos() { return servicos; }
 
     public LinkedList<Cliente> getClientes() {
         return clientes;

@@ -8,6 +8,8 @@ package Gerenciadores;
 import modelo.Cliente;
 import modelo.Produto;
 import bancoDeDados.BancoDeDados;
+import modelo.Servico;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -73,6 +75,15 @@ public class GerenciadorDeBusca {
         for (Produto p1 : bd.getProdutos()) {
             if (p1 != null && p1.getCodigo() == codigo) {
                 return p1;
+            }
+        }
+        return null;
+    }
+
+    public Servico buscaServicoPorCodigo(int codigo) {
+        for (Servico s1 : bd.getServicos()) {
+            if (s1 != null && s1.getCodigo() == codigo) {
+                return s1;
             }
         }
         return null;

@@ -11,8 +11,10 @@ import Gerenciadores.Cadastros;
 import Gerenciadores.GerenciadorDeBusca;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import modelo.Carrinho;
+import modelo.Servico;
 
 /**
  *
@@ -37,9 +39,10 @@ public class Menu {
         System.out.println("1 - Ver todos os produtos");
         System.out.println("2 - Procurar produtos");
         System.out.println("3 - Inserir um Produto no carrinho");
-        System.out.println("4 - Visualizar carrinho");
-        System.out.println("5 - Entrar como administrador");
-        System.out.println("6 - Sair");
+        System.out.println("4 - Inserir um Serviço no carrinho");
+        System.out.println("5 - Visualizar carrinho");
+        System.out.println("6 - Entrar como administrador");
+        System.out.println("0 - Sair");
 
         int escolha = scanner.nextInt();
 
@@ -50,16 +53,19 @@ public class Menu {
             case 2:
                 menuProcurarProduto();
                 menuInicial();
+            case 4:
+                menuComprarServico();
+                menuInicial();
             case 3:
                 menuColocarNoCarrinhoPorCodigo();
                 menuInicial();
-            case 4:
+            case 5:
                 visualizarCarrinho();
                 menuInicial();
-            case 5:
+            case 6:
                 menuAdmLogin();
                 menuInicial();
-            case 6:
+            case 0:
                 System.exit(0);
 
         }
@@ -257,5 +263,54 @@ public class Menu {
         });
                 
     }
+
+    private void menuComprarServico() {
+        System.out.println("1 - Ver serviços disponíveis.");
+        System.out.println("2 - Agendar serviço.");
+        System.out.println("0 - Voltar ao Menu Inicial");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha) {
+            case 1:
+                verServicosDisponiveis();
+                menuComprarServico();
+            case 2:
+                menuAgendarServico();
+                menuComprarServico();
+            case 0:
+                menuInicial();
+        }
+    }
+
+    private void verServicosDisponiveis() {
+       bd.getServicos().forEach(servico -> {
+           System.out.println(servico.toString());
+       });
+    }
+
+    private void menuAgendarServico() {
+        System.out.println("Digite o código do serviço desejado:");
+        int codigoServico = scanner.nextInt();
+        Servico servicoDesejado = busca.buscaServicoPorCodigo(codigoServico);
+        Date dataDesejada = selecionarDataServico(servicoDesejado);
+        carrinho.adicionarServicoNoCarrinho(servicoDesejado, dataDesejada);
+    }
+
+    private Date selecionarDataServico(Servico servico) {
+        System.out.println("Escolha a opção da data desejada");
+        System.out.println("----------------------------------");
+        for (int i = 1; i < servico.getDatas().size(); i++) {
+            System.out.println(i + " - " + servico.getDatas().indexOf(i-1));
+        }
+        System.out.println("");
+        System.out.println("Escolha a opção da data desejada");
+        System.out.println("----------------------------------");
+        int escolha = scanner.nextInt();
+        Date data = servico.getDatas().get(escolha-1);
+        return data;
+
+    }
 }
+
 
