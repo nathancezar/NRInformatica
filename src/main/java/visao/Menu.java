@@ -11,7 +11,6 @@ import Gerenciadores.Cadastros;
 import Gerenciadores.GerenciadorDeBusca;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 import modelo.Carrinho;
 import modelo.Servico;
@@ -87,6 +86,27 @@ public class Menu {
     private void menuAdm() {
         System.out.println("----AREA ADMINISTRATIVA----");
         System.out.println("");
+        System.out.println("1 - Produtos");
+        System.out.println("2 - Serviços");
+        System.out.println("0 - Sair");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha) {
+            case 1:
+                menuAdmProdutos();
+                menuAdm();
+            case 2:
+                menuAdmServicos();
+                menuAdm();
+            case 0:
+                menuInicial();
+        }
+    }
+
+    private void menuAdmProdutos() {
+        System.out.println("----AREA ADMINISTRATIVA----");
+        System.out.println("");
         System.out.println("1 - Cadastrar produto");
         System.out.println("2 - Editar produto");
         System.out.println("3 - Excluir produto");
@@ -98,16 +118,16 @@ public class Menu {
             case 1:
                 cadastro.novoProduto();
                 System.out.println("Produto Adicionado com sucesso.");
-                menuAdm();
+                menuAdmProdutos();
                 break;
             case 2:
                 editarProduto();
-                menuAdm();
+                menuAdmProdutos();
                 break;
             case 3:
                 menuExcluirProduto();
                 System.out.println("Produto removido com sucesso");
-                menuAdm();
+                menuAdmProdutos();
                 break;
             case 0:
                 menuInicial();                
@@ -126,14 +146,14 @@ public class Menu {
                 if (escolha.equalsIgnoreCase("s")) {
                     cadastro.removerProduto(bd.getProdutos().get(i));
                     System.out.println("Produto removido com sucesso.");
-                    menuAdm();
+                    menuAdmProdutos();
                 } else {
                     System.out.println("Produto não removido");
-                    menuAdm();
+                    menuAdmProdutos();
                 }
             } else {
                 System.out.println("Produto não encontrado!");
-                menuAdm();
+                menuAdmProdutos();
             }
         }
     }
@@ -163,6 +183,48 @@ public class Menu {
             }
         }
 
+    }
+
+    private void menuAdmServicos() {
+        System.out.println("----AREA ADMINISTRATIVA----");
+        System.out.println("");
+        System.out.println("1 - Cadastrar serviço");
+        System.out.println("2 - Editar serviço");
+        System.out.println("3 - Excluir serviço");
+        System.out.println("0 - Voltar ao menu principal");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha) {
+            case 1:
+                menuCadastrarServico();
+                System.out.println("Serviço cadastrado com sucesso!");
+        }
+    }
+
+    private void menuCadastrarServico() {
+        System.out.println("Digite o código do servico.");
+        int codigo = scanner.nextInt();
+
+        System.out.println("Digite o nome do serviço.");
+        System.out.print("");
+        String nomeServico = scanner.next();
+
+        System.out.println("Digite a quantidade de datas/horários que deseja cadastrar");
+        int qtdHorarios = scanner.nextInt();
+
+        ArrayList<String> horarios = new ArrayList<>();
+        for (int i = 0; i < qtdHorarios; i++) {
+            System.out.println("Digite a "+i+"ª data/horário (d/m/a h:m)");
+            String horario = scanner.next();
+            horarios.add(horario);
+        }
+
+        System.out.println("Digite o valor do serviço.");
+        float preco = scanner.nextFloat();
+
+        cadastro.criarNovoServico(codigo, nomeServico, horarios, preco);
+        System.out.println("Serviço "+nomeServico + " criado com sucesso.");
     }
 
     private void menuEscolheEdicao(Produto produto, int cod) {
@@ -293,21 +355,21 @@ public class Menu {
         System.out.println("Digite o código do serviço desejado:");
         int codigoServico = scanner.nextInt();
         Servico servicoDesejado = busca.buscaServicoPorCodigo(codigoServico);
-        Date dataDesejada = selecionarDataServico(servicoDesejado);
+        String dataDesejada = selecionarDataServico(servicoDesejado);
         carrinho.adicionarServicoNoCarrinho(servicoDesejado, dataDesejada);
     }
 
-    private Date selecionarDataServico(Servico servico) {
+    private String selecionarDataServico(Servico servico) {
         System.out.println("Escolha a opção da data desejada");
         System.out.println("----------------------------------");
-        for (int i = 1; i < servico.getDatas().size(); i++) {
-            System.out.println(i + " - " + servico.getDatas().indexOf(i-1));
+
+        for (int i = 1; i <= servico.getDatas().size(); i++) {
+            System.out.println("Opção "+i+ " - "+servico.getDatas().get(i-1));
         }
-        System.out.println("");
-        System.out.println("Escolha a opção da data desejada");
+
         System.out.println("----------------------------------");
         int escolha = scanner.nextInt();
-        Date data = servico.getDatas().get(escolha-1);
+        String data = servico.getDatas().get(escolha-1);
         return data;
 
     }

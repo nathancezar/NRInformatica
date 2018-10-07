@@ -10,7 +10,6 @@ import bancoDeDados.BancoDeDados;
 import modelo.Servico;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -56,7 +55,7 @@ public class Cadastros {
 
     }
 
-    public void criarNovoServico(int codigo, String nome, ArrayList<Date> datas, float preco) {
+    public void criarNovoServico(int codigo, String nome, ArrayList<String> datas, float preco) {
         Servico servico = new Servico(codigo, nome, datas, preco);
         adicionarServico(servico);
     }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import Gerenciadores.Promocoes;
 import bancoDeDados.BancoDeDados;
 import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Timer;
@@ -96,18 +95,21 @@ public class Carrinho {
         return false;
     }
 
-    public synchronized boolean adicionarServicoNoCarrinho(Servico servico, Date data) {
-        Servico servicoNoCarrinho = servico;
-        ArrayList<Date> datasDoServico = new ArrayList<>();
+    public synchronized boolean adicionarServicoNoCarrinho(Servico servico, String data) {
+        ArrayList<String> datasDoServico = new ArrayList<>();
         datasDoServico.add(data);
-        servicoNoCarrinho.setDatas(datasDoServico);
+
+        Servico servicoNoCarrinho = new Servico(servico.getCodigo(), servico.getNome(), datasDoServico, servico.getPreco());
+
         removeDataDoServicoEmEstoque(servico, data);
+        this.listaDeServicos.add(servicoNoCarrinho);
+        this.setValorTotal(getValorTotal()+servico.getPreco());
         return true;
     }
 
-    private void removeDataDoServicoEmEstoque(Servico servico, Date data) {
-        int indice = bd.getServicos().indexOf(servico);
-        bd.getServicos().get(indice).getDatas().remove(data);
+    private void removeDataDoServicoEmEstoque(Servico servico, String data) {
+        int indiceServico = bd.getServicos().indexOf(servico);
+        bd.getServicos().get(indiceServico).getDatas().remove(data);
     }
 
     // remove a quantidade de produtos que o cliente colocou no carrinho
@@ -128,20 +130,6 @@ public class Carrinho {
             Logger.getLogger(Carrinho.class.getName()).log(Level.SEVERE, null, ex);
         }
         return produtoNovo;
-    }
-
-    private Servico clonarServico (Servico servico) {
-        return null;
-    }
-
-    // remove o produto do carrinho e retorna novamente a quantidade
-    //que havia no carrinho para o estoque
-    private synchronized void removerProduto(Produto produto) throws NullPointerException {
-        if (this.listaDeProdutos.contains(produto)) {
-            this.retornaQuantidadeAoEstoque(produto);
-            this.listaDeProdutos.remove(produto);
-            this.valorTotal -= produto.getPreco();
-        }
     }
 
     // retorna uma instancia do produto do estoque
@@ -195,6 +183,10 @@ public class Carrinho {
         String mensagem = "\nProdutos atualmente no Carrinho: \n --- \n";
         for (Produto produto : listaDeProdutos) {
             mensagem += produto.toString() + "\n";
+        }
+
+        for (Servico servico : listaDeServicos) {
+            mensagem += servico.toString() + "\n";
         }
         mensagem += "Valor Total: " + df.format(valorTotal) + "\n";
         return mensagem;

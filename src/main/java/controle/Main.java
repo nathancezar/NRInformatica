@@ -11,7 +11,6 @@ import visao.Menu;
 import modelo.Produto;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
@@ -38,11 +37,13 @@ public class Main {
         Produto produtoP5 = new Produto(1004, 3, 49.90f, "Pendrive Sandisk 8GB",
                 "endereco", "Mouse Optico Razer 1800DPI Modelo 075 Nagius");
 
-        Date data1 = new Date(2018, 10, 10, 10, 00);
-        Date data2 = new Date(2018, 10, 10, 10, 30);
-        Date data3 = new Date(2018, 10, 10, 11, 00);
-        ArrayList<Date> datas = new ArrayList<>();
+        String data1 = "10/10/2010 10:20";
+        String data2 = "10/10/2018 10:50";
+        String data3 = "10/10/2018 12:00";
+        ArrayList<String> datas = new ArrayList<>();
         datas.add(data1);
+        datas.add(data2);
+        datas.add(data3);
 
         Servico s1 = new Servico(2000, "Formatação para Windows 10", datas , 79.90f);
         Servico s2 = new Servico(2001, "Instalçao pacote office 2016", datas, 59.90f);
