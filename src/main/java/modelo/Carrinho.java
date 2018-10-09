@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import Gerenciadores.Promocoes;
 import bancoDeDados.BancoDeDados;
 import java.text.DecimalFormat;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Timer;
@@ -29,14 +30,16 @@ public class Carrinho {
     private final Promocoes promocao = new Promocoes();
     private DecimalFormat df = new DecimalFormat("#.00");
     private float valorTotal;
-    private Timer timer;
-    private TimerTask tarefa;
+    private float valorDoDescontoRecebido;
+    private final Cronometro cronometro;
 
     public Carrinho() {
         this.listaDeProdutos = new ArrayList<>();
         this.listaDeServicos = new ArrayList<>();
         this.clienteDoCarrinho = new Cliente();
         this.valorTotal = 0;
+        this.valorDoDescontoRecebido = 0;
+        this.cronometro = new Cronometro(this);
     }
 
     public ArrayList<Produto> getListaDeProdutos() {
@@ -61,19 +64,25 @@ public class Carrinho {
         this.valorTotal = valorTotal;
     }
 
+    public float getValorDoDescontoRecebido() {
+        return valorDoDescontoRecebido;
+    }
+
+    public void setValorDoDescontoRecebido(float valorDoDescontoRecebido) {
+        this.valorDoDescontoRecebido = valorDoDescontoRecebido;
+    }
+
+    public Cronometro getCronometro() {
+        return cronometro;
+    }
+
+
     // inicia uma contagem para cancelar o carrinho
     // ainda não achei uma forma de cancelar apos adicionar outro produto
     private void iniciarContagem() {
-        tarefa = new TimerTask() {
-            @Override
-            public void run() {
-                if (removerTodosOsProdutos()) {
-                    System.out.println("Tempo do Carrinho Expirado!");
-                }
-            }
-        }; 
-        //tarefa.cancel();
-        this.timer.schedule(tarefa, 5000);    //120000 milis./120 segundos/2 minutos
+       if(!cronometro.isCronometroRodando()) {
+           cronometro.run();
+       }
     }
 
     // adiciona ao carrinho a quantidade desejada de um produto
@@ -82,17 +91,48 @@ public class Carrinho {
     // verifica se há alguma promoção a ser aplicada
     // inicia um timer novo a cada inserção
     public synchronized boolean adicionarProduto(Produto produto, int quantidade) {
-        if (verificaDisponibilidade(produto, quantidade)) {
-            Produto produtoNovo = clonarProduto(produto);
-            produtoNovo.setQuantidade(quantidade);
-            this.getListaDeProdutos().add(produtoNovo);
-            this.valorTotal += produtoNovo.getPreco() * quantidade;
-            removeQuantidadeDoEstoque(produto, quantidade);
-            promocao.leve3pague2(this, produtoNovo);
+        if (verificaSeJaContemProduto(produto.getCodigo())) {
+            adicionaProdutoExistente(produto, quantidade);
+            promocao.verificaPromocoesAplicaveis(this);
+            iniciarContagem();
+            return true;
+        } else if (verificaDisponibilidade(produto, quantidade)) {
+            adicionarProdutoNovo(produto, quantidade);
+            promocao.verificaPromocoesAplicaveis(this);
             iniciarContagem();
             return true;
         }
         return false;
+    }
+
+    private void adicionaProdutoExistente(Produto produto, int quantidade) {
+        Produto produtoAux = retornaProdutoPorCodigo(produto.getCodigo());
+        if (produtoAux != null) {
+            produtoAux.setQuantidade(quantidade + produtoAux.getQuantidade());
+            this.valorTotal += produto.getPreco() * quantidade;
+            removeQuantidadeDoEstoque(produto, quantidade);
+        }
+    }
+
+    // adiciona um novo produto ao carrinho, clonando o mesmo do banco
+    // de dados, e altera o valor do carrinho
+    // remove do estoque a quantidade selecionada
+    private void adicionarProdutoNovo(Produto produto, int quantidade) {
+        Produto produtoNovo = clonarProduto(produto);
+        produtoNovo.setQuantidade(quantidade);
+        this.getListaDeProdutos().add(produtoNovo);
+        this.valorTotal += produtoNovo.getPreco() * quantidade;
+        removeQuantidadeDoEstoque(produto, quantidade);
+    }
+
+    // retorna um produto do carrinho pelo codigo, ou retorna null
+    public Produto retornaProdutoPorCodigo(int codigo) {
+        for (Produto p1 : listaDeProdutos) {
+            if (p1.getCodigo() == codigo) {
+                return p1;
+            }
+        }
+        return null;
     }
 
     public synchronized boolean adicionarServicoNoCarrinho(Servico servico, String data) {
@@ -104,12 +144,34 @@ public class Carrinho {
         removeDataDoServicoEmEstoque(servico, data);
         this.listaDeServicos.add(servicoNoCarrinho);
         this.setValorTotal(getValorTotal()+servico.getPreco());
+        iniciarContagem();
         return true;
     }
 
     private void removeDataDoServicoEmEstoque(Servico servico, String data) {
         int indiceServico = bd.getServicos().indexOf(servico);
         bd.getServicos().get(indiceServico).getDatas().remove(data);
+    }
+
+    public void removeServicoDoCarrinho(int cod) {
+        Servico servico = retornaServicoPorCodigo(cod);
+
+        if (servico != null) {
+            listaDeServicos.remove(servico);
+            Servico servicoBD = busca.buscaServicoPorCodigo(cod);
+            int indiceServico = bd.getServicos().indexOf(servicoBD);
+            bd.getServicos().get(indiceServico).getDatas().add(servico.getDatas().get(0));
+            this.valorTotal -= servico.getPreco();
+        }
+    }
+
+    public Servico retornaServicoPorCodigo(int codigo) {
+        for (Servico s1 : this.listaDeServicos) {
+            if (s1 != null && s1.getCodigo() == codigo) {
+                return s1;
+            }
+        }
+        return null;
     }
 
     // remove a quantidade de produtos que o cliente colocou no carrinho
@@ -144,13 +206,27 @@ public class Carrinho {
         return null;
     }
 
+    // remove o produto do carrinho e retorna novamente a quantidade
+    //que havia no carrinho para o estoque
+    public synchronized void removerProduto(Produto produto, int quantARemover) throws NullPointerException {
+        if (this.listaDeProdutos.contains(produto)) {
+            this.retornaQuantidadeAoEstoque(produto, quantARemover);
+            this.valorTotal -= (produto.getPreco() * quantARemover);
+            this.valorTotal = Math.max(valorTotal,0);
+            produto.setQuantidade(produto.getQuantidade() - quantARemover);
+            if (produto.getQuantidade() <= 0) {
+                this.listaDeProdutos.remove(produto);
+            }
+            promocao.verificaPromocoesAplicaveis(this);
+        }
+    }
+
     // metodo para retornar ao estoque a quantidade de um produto
-    private synchronized void retornaQuantidadeAoEstoque(Produto produto) throws NullPointerException {
-        Produto produtoAux = instanciaDoProdutoOriginal(produto);
-        if (produtoAux != null) {
-            int index = bd.getProdutos().indexOf(produtoAux);
-            int quantidadeNoEstoque = bd.getProdutos().get(index).getQuantidade();
-            bd.getProdutos().get(index).setQuantidade(quantidadeNoEstoque + produto.getQuantidade());        
+    private synchronized void retornaQuantidadeAoEstoque(Produto produto, int quantARemover) {
+        int quantidadeCorreta = Math.min(quantARemover, produto.getQuantidade());
+        Produto produtoOriginal = instanciaDoProdutoOriginal(produto);
+        if (produtoOriginal != null) {
+            produtoOriginal.setQuantidade(quantidadeCorreta+produtoOriginal.getQuantidade());
         }
     }
 
@@ -158,8 +234,9 @@ public class Carrinho {
     // zera o valor a ser pago pelo carrinho
     public synchronized boolean removerTodosOsProdutos() {
         listaDeProdutos.forEach((produto) -> {
-            retornaQuantidadeAoEstoque(produto);
+            retornaQuantidadeAoEstoque(produto, produto.getQuantidade());
         });
+
         this.listaDeProdutos.clear();
         this.valorTotal = 0;
         return this.listaDeProdutos.isEmpty();
@@ -172,7 +249,7 @@ public class Carrinho {
 
     // verifica se existe, atualmente no carrinho, um produto com
     // o código passado
-    public boolean verificaSeCodigoExiste(int codigo) {
+    public boolean verificaSeJaContemProduto(int codigo) {
         return this.listaDeProdutos.stream().anyMatch((produto)
                 -> (codigo == produto.getCodigo()));
     }
