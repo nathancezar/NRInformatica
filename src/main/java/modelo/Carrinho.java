@@ -10,11 +10,8 @@ import java.util.ArrayList;
 import Gerenciadores.Promocoes;
 import bancoDeDados.BancoDeDados;
 import java.text.DecimalFormat;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  *
