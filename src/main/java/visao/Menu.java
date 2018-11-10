@@ -6,6 +6,7 @@
 package visao;
 
 import Gerenciadores.Promocoes;
+import Gerenciadores.Vendas;
 import modelo.*;
 import bancoDeDados.BancoDeDados;
 import Gerenciadores.Cadastros;
@@ -27,6 +28,7 @@ public class Menu {
     Carrinho carrinho = new Carrinho();
     DecimalFormat df = new DecimalFormat("#0.00");
     Promocoes promocoes = Promocoes.getPromocoes();
+    Vendas venda = Vendas.getVendas();
 
     public void menuInicial() {
 
@@ -401,7 +403,7 @@ public class Menu {
                 menuRemoverServicoDoCarrinho();
                 menuInicial();
             case 2:
-                finalizarVenda();
+                menuLoginParaFinalizar();
                 menuInicial();
             default:
                 menuInicial();
@@ -449,6 +451,7 @@ public class Menu {
     private void menuAgendarServico() {
         System.out.println("Digite o código do serviço desejado:");
         int codigoServico = scanner.nextInt();
+
         Servico servicoDesejado = busca.buscaServicoPorCodigo(codigoServico);
         String dataDesejada = selecionarDataServico(servicoDesejado);
         carrinho.adicionarServicoNoCarrinho(servicoDesejado, dataDesejada);
@@ -469,7 +472,7 @@ public class Menu {
 
     }
 
-    private Cliente verificarLoginCliente() {
+    private Cliente loginCliente() {
         boolean validou = false;
         System.out.println("Digite seu usuário");
         int cpf = scanner.nextInt();
@@ -490,9 +493,9 @@ public class Menu {
 
             switch (escolha) {
                 case 1 :
-                    verificarLoginCliente();
+                    loginCliente();
                 case 0:
-                    finalizarVenda();
+                    menuLoginParaFinalizar();
             }
         }
 
@@ -522,7 +525,7 @@ public class Menu {
         cadastro.cadastrarCliente(nome, cpf, senha, estado, cidade, bairro, rua, complemento, numero);
     }
 
-    private void finalizarVenda() {
+    private void menuLoginParaFinalizar() {
         System.out.println("---------------------------------------------");
         System.out.println("-------Login para finalizar compra ----------");
         System.out.println("---------------------------------------------");
@@ -535,8 +538,7 @@ public class Menu {
 
         switch (escolha){
             case 1:
-                verificarLoginCliente();
-                menuPagamento();
+                menuFinalizarCompra();
             case 2:
                 cadastrarClienteNovo();
             case 3:
@@ -544,7 +546,9 @@ public class Menu {
         }
     }
 
-    private void menuPagamento() {
+    private void menuFinalizarCompra() {
+        Cliente cliente = loginCliente();
+        venda.realizarVenda(carrinho, cliente);
 
     }
 
