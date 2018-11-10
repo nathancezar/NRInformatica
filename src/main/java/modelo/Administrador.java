@@ -8,7 +8,6 @@ package modelo;
 public class Administrador {
     
     private String login, senha;
-    //testando branch
 
     public Administrador(String login, String senha) {
         this.login = login;

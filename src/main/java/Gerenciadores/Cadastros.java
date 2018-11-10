@@ -5,6 +5,8 @@
  */
 package Gerenciadores;
 
+import modelo.Cliente;
+import modelo.Endereco;
 import modelo.Produto;
 import bancoDeDados.BancoDeDados;
 import modelo.Servico;
@@ -74,6 +76,20 @@ public class Cadastros {
 
     public void removerProduto(Produto produto) {
         bd.getProdutos().remove(produto);
+    }
+
+    public void cadastrarCliente(String nome,
+                                 int cpf,
+                                 String senha,
+                                 String estado,
+                                 String cidade,
+                                 String bairro,
+                                 String rua,
+                                 String complemento,
+                                 int numero) {
+        Endereco endereco = new Endereco(estado, cidade, bairro, rua, complemento, numero);
+        Cliente cliente = new Cliente(nome, cpf, endereco, senha);
+        bd.getClientes().add(cliente);
     }
 
 }

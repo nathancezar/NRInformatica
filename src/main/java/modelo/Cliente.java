@@ -9,14 +9,16 @@ public class Cliente {
     
     private String nome;
     private int cpf;
+    private String senha;
     private Endereco endereco;
     private Carrinho carrinho;
 
-    public Cliente(String nome, int cpf, Endereco endereco) {
+    public Cliente(String nome, int cpf, Endereco endereco, String senha) {
         this.nome = nome;
         this.cpf = cpf;
         this.endereco = endereco;
         this.carrinho = new Carrinho();
+        this.senha = senha;
     }
 
     public Cliente() {
@@ -53,9 +55,12 @@ public class Cliente {
     public void setCarrinho(Carrinho carrinho) {
         this.carrinho = carrinho;
     }
-    
-    
-    
-    
-    
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 }

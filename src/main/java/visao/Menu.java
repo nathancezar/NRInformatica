@@ -6,7 +6,7 @@
 package visao;
 
 import Gerenciadores.Promocoes;
-import modelo.Produto;
+import modelo.*;
 import bancoDeDados.BancoDeDados;
 import Gerenciadores.Cadastros;
 import Gerenciadores.GerenciadorDeBusca;
@@ -14,9 +14,6 @@ import Gerenciadores.GerenciadorDeBusca;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import modelo.Carrinho;
-import modelo.Servico;
 
 /**
  * @author rafael
@@ -394,6 +391,7 @@ public class Menu {
 
         System.out.println("---------------------------");
         System.out.println("1 - Remover serviço do carrinho.");
+        System.out.println("2 - Finalizar compra");
         System.out.println("0 - Voltar ao menu anterior");
 
         int escolha = scanner.nextInt();
@@ -401,6 +399,9 @@ public class Menu {
         switch (escolha) {
             case 1:
                 menuRemoverServicoDoCarrinho();
+                menuInicial();
+            case 2:
+                finalizarVenda();
                 menuInicial();
             default:
                 menuInicial();
@@ -467,6 +468,87 @@ public class Menu {
         return data;
 
     }
+
+    private Cliente verificarLoginCliente() {
+        boolean validou = false;
+        System.out.println("Digite seu usuário");
+        int cpf = scanner.nextInt();
+        System.out.println("Digite sua senha");
+        String senha = scanner.next();
+        Cliente cliente = busca.buscaClientePorCPF(cpf);
+
+        if (cliente.getSenha().equals(senha)) {
+            validou = true;
+        }
+
+        while (!validou) {
+            System.out.println("CPF ou senha inválidos.");
+            System.out.println("1 - Tentar novamente");
+            System.out.println("0 - Voltar ao menu anterior");
+
+            int escolha = scanner.nextInt();
+
+            switch (escolha) {
+                case 1 :
+                    verificarLoginCliente();
+                case 0:
+                    finalizarVenda();
+            }
+        }
+
+        return cliente;
+    }
+
+    private void cadastrarClienteNovo(){
+        System.out.println("Digite seu nome:");
+        String nome = scanner.next();
+        System.out.println("Digite seu CPF:");
+        int cpf = scanner.nextInt();
+        System.out.println();
+        String senha = scanner.next();
+        System.out.print("Digite seu estado:");
+        String estado = scanner.next();
+        System.out.println("Digite sua cidade:");
+        String cidade = scanner.next();
+        System.out.println("Digite seu bairro:");
+        String bairro = scanner.next();
+        System.out.println("Digite sua rua:");
+        String rua = scanner.next();
+        System.out.println("Digite o complemento:");
+        String complemento = scanner.next();
+        System.out.println("Digite o número da residência:");
+        int numero = scanner.nextInt();
+
+        cadastro.cadastrarCliente(nome, cpf, senha, estado, cidade, bairro, rua, complemento, numero);
+    }
+
+    private void finalizarVenda() {
+        System.out.println("---------------------------------------------");
+        System.out.println("-------Login para finalizar compra ----------");
+        System.out.println("---------------------------------------------");
+
+        System.out.println("1 - Fazer login");
+        System.out.println("2 - Cadastrar-se");
+        System.out.println("0 - Voltar ao menu anterior");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha){
+            case 1:
+                verificarLoginCliente();
+                menuPagamento();
+            case 2:
+                cadastrarClienteNovo();
+            case 3:
+                menuInicial();
+        }
+    }
+
+    private void menuPagamento() {
+
+    }
+
+
 }
 
 
