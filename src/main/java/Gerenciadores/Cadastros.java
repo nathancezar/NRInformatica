@@ -81,14 +81,12 @@ public class Cadastros {
     public void cadastrarCliente(String nome,
                                  int cpf,
                                  String senha,
-                                 String estado,
-                                 String cidade,
-                                 String bairro,
-                                 String rua,
-                                 String complemento,
-                                 int numero) {
-        Endereco endereco = new Endereco(estado, cidade, bairro, rua, complemento, numero);
+                                 Endereco endereco) {
         Cliente cliente = new Cliente(nome, cpf, endereco, senha);
+        bd.getClientes().add(cliente);
+    }
+
+    public void adicionarCliente(Cliente cliente) {
         bd.getClientes().add(cliente);
     }
 

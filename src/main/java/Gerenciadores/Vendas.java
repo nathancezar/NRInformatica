@@ -101,7 +101,7 @@ public class Vendas {
         return cupomFiscal;
     }
     
-    private String gerarCupomFiscalServicos(Carrinho carrinho, Cliente cliente) {
+  /*  private String gerarCupomFiscalServicos(Carrinho carrinho, Cliente cliente) {
         ArrayList<Servico> servicosVendidos = carrinho.getListaDeServicos();
         String cupomFiscal = " ";
         if (!servicosVendidos.isEmpty()) {
@@ -121,5 +121,5 @@ public class Vendas {
                     + "\nTOTAL\t\t\t" + carrinho.getValorTotal();
         }
         return cupomFiscal;
-    }
+    } */
 }

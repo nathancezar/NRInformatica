@@ -474,7 +474,7 @@ public class Menu {
 
     private Cliente loginCliente() {
         boolean validou = false;
-        System.out.println("Digite seu usuário");
+        System.out.println("Digite seu CPF");
         int cpf = scanner.nextInt();
         System.out.println("Digite sua senha");
         String senha = scanner.next();
@@ -504,25 +504,32 @@ public class Menu {
 
     private void cadastrarClienteNovo(){
         System.out.println("Digite seu nome:");
+        System.out.print("");
         String nome = scanner.next();
         System.out.println("Digite seu CPF:");
         int cpf = scanner.nextInt();
-        System.out.println();
+        System.out.println("Digite sua senha");
         String senha = scanner.next();
-        System.out.print("Digite seu estado:");
+        System.out.println("Digite seu estado:");
+        System.out.print("");
         String estado = scanner.next();
         System.out.println("Digite sua cidade:");
+        System.out.print("");
         String cidade = scanner.next();
         System.out.println("Digite seu bairro:");
+        System.out.print("");
         String bairro = scanner.next();
         System.out.println("Digite sua rua:");
+        System.out.print("");
         String rua = scanner.next();
         System.out.println("Digite o complemento:");
+        System.out.print("");
         String complemento = scanner.next();
         System.out.println("Digite o número da residência:");
         int numero = scanner.nextInt();
+        Endereco end = new Endereco(estado, cidade, bairro, rua, complemento, numero);
 
-        cadastro.cadastrarCliente(nome, cpf, senha, estado, cidade, bairro, rua, complemento, numero);
+        cadastro.cadastrarCliente(nome, cpf, senha, end);
     }
 
     private void menuLoginParaFinalizar() {

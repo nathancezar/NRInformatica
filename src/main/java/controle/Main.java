@@ -6,6 +6,8 @@
 package controle;
 
 import Gerenciadores.Cadastros;
+import modelo.Cliente;
+import modelo.Endereco;
 import modelo.Servico;
 import visao.Menu;
 import modelo.Produto;
@@ -56,6 +58,12 @@ public class Main {
         cadastro.adicionarProduto(produtoP5);
         cadastro.adicionarServico(s1);
         cadastro.adicionarServico(s2);
+
+        Endereco end = new Endereco("RS", "Constantina", "São Roque", "São José", "casa", 361);
+
+        Cliente cliente = new Cliente("Rafael", 12345678, end, "1234");
+
+        cadastro.adicionarCliente(cliente);
         
         Menu menu = new Menu();
         menu.menuInicial();
