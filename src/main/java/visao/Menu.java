@@ -480,26 +480,23 @@ public class Menu {
         String senha = scanner.next();
         Cliente cliente = busca.buscaClientePorCPF(cpf);
 
-        if (cliente.getSenha().equals(senha)) {
-            validou = true;
+        if (cliente != null && cliente.getSenha().equals(senha)) {
+            return cliente;
+        } else {
+                System.out.println("CPF ou senha inválidos.");
+                System.out.println("1 - Tentar novamente");
+                System.out.println("0 - Voltar ao menu anterior");
+
+                int escolha = scanner.nextInt();
+
+                switch (escolha) {
+                    case 1:
+                        loginCliente();
+                    case 0:
+                        menuLoginParaFinalizar();
+                }
         }
-
-        while (!validou) {
-            System.out.println("CPF ou senha inválidos.");
-            System.out.println("1 - Tentar novamente");
-            System.out.println("0 - Voltar ao menu anterior");
-
-            int escolha = scanner.nextInt();
-
-            switch (escolha) {
-                case 1 :
-                    loginCliente();
-                case 0:
-                    menuLoginParaFinalizar();
-            }
-        }
-
-        return cliente;
+        return null;
     }
 
     private void cadastrarClienteNovo(){
@@ -555,11 +552,40 @@ public class Menu {
 
     private void menuFinalizarCompra() {
         Cliente cliente = loginCliente();
-        venda.realizarVenda(carrinho, cliente);
+        System.out.println("-----------Finalizando compra-----------");
+        System.out.println("-----------Bem vindo, "+cliente.getNome()+ " ----------");
+        System.out.println("1 - Finalizar compra e gerar boleto.");
+        System.out.println("0 - Voltar ao menu inicial.");
 
+        int escolha = scanner.nextInt();
+
+        switch (escolha) {
+            case 1:
+                menuInformarDadosDeCompra(cliente);
+            case 0:
+                menuInicial();
+        }
+
+    }
+
+    private void menuInformarDadosDeCompra(Cliente cliente) {
+        venda.realizarVenda(carrinho, cliente);
+        System.out.println("Compra finalizada com sucesso!");
+        System.out.println("------------------------------");
+        System.out.println("1 - Visualizar bolero");
+        System.out.println("2 - Visualizar cupom fiscal");
+        System.out.println("3 - Iniciar uma nova compra");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha) {
+            case 1:
+                venda.gerarBoleto(carrinho);
+            case 2:
+                break;
+                // TODO: 10/11/18 Para visualizar cupom fiscal é necessário informar os produtos.
+        }
     }
 
 
 }
-
-

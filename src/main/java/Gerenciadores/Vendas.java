@@ -45,7 +45,7 @@ public class Vendas {
         carrinho.setClienteDoCarrinho(null);
     }
 
-    private String gerarBoleto(Carrinho carrinho) {
+    public String gerarBoleto(Carrinho carrinho) {
         String boleto = "23790";
         Random rd = new Random();
         for (int i = 0; i < 5; i++) {
@@ -59,7 +59,7 @@ public class Vendas {
                 + String.format("%05f", carrinho.getValorTotal());
     }
 
-    private String stringDeProdutosParaCF(ArrayList<Produto> produtos) {
+    public String stringDeProdutosParaCF(ArrayList<Produto> produtos) {
         String produtosOrganizados = "\n";
         for (int i = 1; i <= produtos.size(); i++) {
             double total = produtos.get(i).getPreco() * produtos.get(i).getQuantidade();
