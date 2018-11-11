@@ -38,22 +38,15 @@ public class GerenciadorDeVendas {
         return venda;
     }
 
-    public synchronized void realizarVenda(Carrinho carrinho, Cliente cliente) {
+    public synchronized int realizarVenda(Carrinho carrinho, Cliente cliente) {
         carrinho.setCliente(cliente);
         removerDescontosInvalidos(carrinho, cliente); // isso deve ser chamado no menu!! avisar ao cliente a retirada do desconto
-        String boleto = gerarBoleto(carrinho);
-        String cupomProdutos = gerarCupomFiscalProdutos(carrinho);
-        String cupomServicos = gerarCupomFiscalServicos(carrinho);
-        Venda novaVenda = new Venda(cliente, boleto);
-        novaVenda.setCupomFiscalProdutos(cupomProdutos);
-        novaVenda.setCupomFiscalServicos(cupomServicos);
+        Venda novaVenda = new Venda(cliente, gerarBoleto(carrinho));
+        novaVenda.setCupomFiscalProdutos(gerarCupomFiscalProdutos(carrinho));
+        novaVenda.setCupomFiscalServicos(gerarCupomFiscalServicos(carrinho));
         bd.getVendas().add(novaVenda);
-
-        System.out.println("\n" + boleto + "\n");
-        System.out.println(cupomProdutos);
-        System.out.println(cupomServicos);
-
         esvaziarCarrinho(carrinho);
+        return novaVenda.getCodigo();
     }
 
     public boolean clienteJaTeveDesconto(int cpf) {

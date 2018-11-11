@@ -6,7 +6,8 @@
 package visao;
 
 import Gerenciadores.Promocoes;
-import modelo.Produto;
+import Gerenciadores.GerenciadorDeVendas;
+import modelo.*;
 import bancoDeDados.BancoDeDados;
 import Gerenciadores.Cadastros;
 import Gerenciadores.GerenciadorDeBusca;
@@ -14,9 +15,6 @@ import Gerenciadores.GerenciadorDeBusca;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import modelo.Carrinho;
-import modelo.Servico;
 
 /**
  * @author rafael
@@ -30,6 +28,7 @@ public class Menu {
     Carrinho carrinho = new Carrinho();
     DecimalFormat df = new DecimalFormat("#0.00");
     Promocoes promocoes = Promocoes.getPromocoes();
+    GerenciadorDeVendas venda = GerenciadorDeVendas.getVendas();
 
     public void menuInicial() {
 
@@ -394,6 +393,7 @@ public class Menu {
 
         System.out.println("---------------------------");
         System.out.println("1 - Remover serviço do carrinho.");
+        System.out.println("2 - Finalizar compra");
         System.out.println("0 - Voltar ao menu anterior");
 
         int escolha = scanner.nextInt();
@@ -401,6 +401,9 @@ public class Menu {
         switch (escolha) {
             case 1:
                 menuRemoverServicoDoCarrinho();
+                menuInicial();
+            case 2:
+                menuLoginParaFinalizar();
                 menuInicial();
             default:
                 menuInicial();
@@ -448,6 +451,7 @@ public class Menu {
     private void menuAgendarServico() {
         System.out.println("Digite o código do serviço desejado:");
         int codigoServico = scanner.nextInt();
+
         Servico servicoDesejado = busca.buscaServicoPorCodigo(codigoServico);
         String dataDesejada = selecionarDataServico(servicoDesejado);
         carrinho.adicionarServicoNoCarrinho(servicoDesejado, dataDesejada);
@@ -467,6 +471,127 @@ public class Menu {
         return data;
 
     }
+
+    private Cliente loginCliente() {
+        boolean validou = false;
+        System.out.println("Digite seu CPF");
+        int cpf = scanner.nextInt();
+        System.out.println("Digite sua senha");
+        String senha = scanner.next();
+        Cliente cliente = busca.buscaClientePorCPF(cpf);
+
+        if (cliente != null && cliente.getSenha().equals(senha)) {
+            return cliente;
+        } else {
+                System.out.println("CPF ou senha inválidos.");
+                System.out.println("1 - Tentar novamente");
+                System.out.println("0 - Voltar ao menu anterior");
+
+                int escolha = scanner.nextInt();
+
+                switch (escolha) {
+                    case 1:
+                        loginCliente();
+                    case 0:
+                        menuLoginParaFinalizar();
+                }
+        }
+        return null;
+    }
+
+    private void cadastrarClienteNovo(){
+        System.out.println("Digite seu nome:");
+        System.out.print("");
+        String nome = scanner.next();
+        System.out.println("Digite seu CPF:");
+        int cpf = scanner.nextInt();
+        System.out.println("Digite sua senha");
+        String senha = scanner.next();
+        System.out.println("Digite seu estado:");
+        System.out.print("");
+        String estado = scanner.next();
+        System.out.println("Digite sua cidade:");
+        System.out.print("");
+        String cidade = scanner.next();
+        System.out.println("Digite seu bairro:");
+        System.out.print("");
+        String bairro = scanner.next();
+        System.out.println("Digite sua rua:");
+        System.out.print("");
+        String rua = scanner.next();
+        System.out.println("Digite o complemento:");
+        System.out.print("");
+        String complemento = scanner.next();
+        System.out.println("Digite o número da residência:");
+        int numero = scanner.nextInt();
+        Endereco end = new Endereco(estado, cidade, bairro, rua, complemento, numero);
+
+        cadastro.cadastrarCliente(nome, cpf, senha, end);
+    }
+
+    private void menuLoginParaFinalizar() {
+        System.out.println("---------------------------------------------");
+        System.out.println("-------Login para finalizar compra ----------");
+        System.out.println("---------------------------------------------");
+
+        System.out.println("1 - Fazer login");
+        System.out.println("2 - Cadastrar-se");
+        System.out.println("0 - Voltar ao menu anterior");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha){
+            case 1:
+                menuFinalizarCompra();
+            case 2:
+                cadastrarClienteNovo();
+            case 3:
+                menuInicial();
+        }
+    }
+
+    private void menuFinalizarCompra() {
+        Cliente cliente = loginCliente();
+        System.out.println("-----------Finalizando compra-----------");
+        System.out.println("-----------Bem vindo, "+cliente.getNome()+ " ----------");
+        System.out.println("1 - Finalizar compra e gerar boleto.");
+        System.out.println("0 - Voltar ao menu inicial.");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha) {
+            case 1:
+                menuInformarDadosDeCompra(cliente);
+            case 0:
+                menuInicial();
+        }
+
+    }
+
+    private void menuInformarDadosDeCompra(Cliente cliente) {
+        int codigoDaVenda = venda.realizarVenda(carrinho, cliente);
+        System.out.println("Compra finalizada com sucesso!");
+        System.out.println("Código da venda: " + codigoDaVenda);
+        System.out.println("Guarde o código em segurança!");
+        System.out.println("------------------------------");
+        System.out.println("1 - Visualizar bolero");
+        System.out.println("2 - Visualizar cupom fiscal dos produtos comprados");
+        System.out.println("3 - Visualizar cupom fiscal dos serviços contratados");
+        System.out.println("4 - Iniciar uma nova compra");
+
+        int escolha = scanner.nextInt();
+
+        switch (escolha) {
+            case 1:
+                venda.reimprimirBoleto(codigoDaVenda);
+            case 2:
+                venda.reimprimirCupomProdutos(codigoDaVenda);
+            case 3:
+                venda.reimprimirCupomServicos(codigoDaVenda);
+            case 4:
+                menuInicial();                
+        }
+    }
+
+
 }
-
-
