@@ -6,7 +6,7 @@
 package visao;
 
 import Gerenciadores.Promocoes;
-import Gerenciadores.Vendas;
+import Gerenciadores.GerenciadorDeVendas;
 import modelo.*;
 import bancoDeDados.BancoDeDados;
 import Gerenciadores.Cadastros;
@@ -28,7 +28,7 @@ public class Menu {
     Carrinho carrinho = new Carrinho();
     DecimalFormat df = new DecimalFormat("#0.00");
     Promocoes promocoes = Promocoes.getPromocoes();
-    Vendas venda = Vendas.getVendas();
+    GerenciadorDeVendas venda = GerenciadorDeVendas.getVendas();
 
     public void menuInicial() {
 
@@ -569,21 +569,27 @@ public class Menu {
     }
 
     private void menuInformarDadosDeCompra(Cliente cliente) {
-        venda.realizarVenda(carrinho, cliente);
+        int codigoDaVenda = venda.realizarVenda(carrinho, cliente);
         System.out.println("Compra finalizada com sucesso!");
+        System.out.println("Código da venda: " + codigoDaVenda);
+        System.out.println("Guarde o código em segurança!");
         System.out.println("------------------------------");
         System.out.println("1 - Visualizar bolero");
-        System.out.println("2 - Visualizar cupom fiscal");
-        System.out.println("3 - Iniciar uma nova compra");
+        System.out.println("2 - Visualizar cupom fiscal dos produtos comprados");
+        System.out.println("3 - Visualizar cupom fiscal dos serviços contratados");
+        System.out.println("4 - Iniciar uma nova compra");
 
         int escolha = scanner.nextInt();
 
         switch (escolha) {
             case 1:
-                venda.gerarBoleto(carrinho);
+                venda.reimprimirBoleto(codigoDaVenda);
             case 2:
-                break;
-                // TODO: 10/11/18 Para visualizar cupom fiscal é necessário informar os produtos.
+                venda.reimprimirCupomProdutos(codigoDaVenda);
+            case 3:
+                venda.reimprimirCupomServicos(codigoDaVenda);
+            case 4:
+                menuInicial();
         }
     }
 
