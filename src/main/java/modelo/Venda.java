@@ -24,7 +24,7 @@ public class Venda {
     public Venda(Cliente cliente_, String boleto_) {
         this.cliente = cliente_;
         this.boleto = boleto_;
-        this.codigo = Integer.parseInt(String.format("%05d", bd.getVendas().size()));
+        this.codigo = (bd.getVendas().size()+1);
     }
 
     public String getBoleto() {

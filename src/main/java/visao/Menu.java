@@ -230,7 +230,6 @@ public class Menu {
         System.out.println("  -----------------------------------  ");
     }
 
-
     private void editarProduto() {
         System.out.println("Procurar produto: (nome)");
         String nomeProduto = scanner.next();
@@ -370,7 +369,6 @@ public class Menu {
         System.out.println("  -----------------------------------  ");
     }
 
-
     private void menuColocarNoCarrinho(ArrayList<Produto> lista) {
         System.out.println("Deseja colocar algum produto encontrado no carrinho? (S/N)");
         String resposta = scanner.next();
@@ -475,7 +473,7 @@ public class Menu {
     private Cliente loginCliente() {
         boolean validou = false;
         System.out.println("Digite seu CPF");
-        int cpf = scanner.nextInt();
+        int cpf = scanner.nextInt();scanner.nextLine();
         System.out.println("Digite sua senha");
         String senha = scanner.next();
         Cliente cliente = busca.buscaClientePorCPF(cpf);
@@ -483,23 +481,24 @@ public class Menu {
         if (cliente != null && cliente.getSenha().equals(senha)) {
             return cliente;
         } else {
-                System.out.println("CPF ou senha inválidos.");
-                System.out.println("1 - Tentar novamente");
-                System.out.println("0 - Voltar ao menu anterior");
+            System.out.println("CPF ou senha inválidos.");
+            System.out.println("1 - Tentar novamente");
+            System.out.println("0 - Voltar ao menu anterior");
 
-                int escolha = scanner.nextInt();
+            int escolha = scanner.nextInt();
 
-                switch (escolha) {
-                    case 1:
-                        loginCliente();
-                    case 0:
-                        menuLoginParaFinalizar();
-                }
+            switch (escolha) {
+                case 1:
+                    loginCliente();
+                    break;
+                default:
+                    menuLoginParaFinalizar();                    
+            }
         }
         return null;
     }
 
-    private void cadastrarClienteNovo(){
+    private void cadastrarClienteNovo() {
         System.out.println("Digite seu nome:");
         System.out.print("");
         String nome = scanner.next();
@@ -540,7 +539,7 @@ public class Menu {
 
         int escolha = scanner.nextInt();
 
-        switch (escolha){
+        switch (escolha) {
             case 1:
                 menuFinalizarCompra();
             case 2:
@@ -553,7 +552,7 @@ public class Menu {
     private void menuFinalizarCompra() {
         Cliente cliente = loginCliente();
         System.out.println("-----------Finalizando compra-----------");
-        System.out.println("-----------Bem vindo, "+cliente.getNome()+ " ----------");
+        System.out.println("-----------Bem vindo, " + cliente.getNome() + " ----------");
         System.out.println("1 - Finalizar compra e gerar boleto.");
         System.out.println("0 - Voltar ao menu inicial.");
 
@@ -570,28 +569,38 @@ public class Menu {
 
     private void menuInformarDadosDeCompra(Cliente cliente) {
         int codigoDaVenda = venda.realizarVenda(carrinho, cliente);
+        boolean sair = false;
         System.out.println("Compra finalizada com sucesso!");
-        System.out.println("Código da venda: " + codigoDaVenda);
+        System.out.println("Código da venda: " + String.format("%05d", codigoDaVenda));
         System.out.println("Guarde o código em segurança!");
-        System.out.println("------------------------------");
-        System.out.println("1 - Visualizar bolero");
-        System.out.println("2 - Visualizar cupom fiscal dos produtos comprados");
-        System.out.println("3 - Visualizar cupom fiscal dos serviços contratados");
-        System.out.println("4 - Iniciar uma nova compra");
+        while (sair == false) {
+            System.out.println("------------------------------");
+            System.out.println("1 - Visualizar boleto");
+            System.out.println("2 - Visualizar cupom fiscal dos produtos comprados");
+            System.out.println("3 - Visualizar cupom fiscal dos serviços contratados");
+            System.out.println("4 - Iniciar uma nova compra");
 
-        int escolha = scanner.nextInt();
+            int escolha = scanner.nextInt();
 
-        switch (escolha) {
-            case 1:
-                venda.reimprimirBoleto(codigoDaVenda);
-            case 2:
-                venda.reimprimirCupomProdutos(codigoDaVenda);
-            case 3:
-                venda.reimprimirCupomServicos(codigoDaVenda);
-            case 4:
-                menuInicial();
+            switch (escolha) {
+                case 1:
+                    System.out.println(venda.reimprimirBoleto(codigoDaVenda)
+                            + "\n");
+                    break;
+                case 2:
+                    System.out.println(venda.reimprimirCupomProdutos(codigoDaVenda)
+                            + "\n");
+                    break;
+                case 3:
+                    System.out.println(venda.reimprimirCupomServicos(codigoDaVenda)
+                            + "\n");
+                    break;
+                case 4:
+                    sair = true;
+                    break;
+            }
         }
+        menuInicial();
     }
-
 
 }
