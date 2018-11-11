@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import javax.swing.JOptionPane;
 import modelo.Carrinho;
 import modelo.Cliente;
 import modelo.Produto;
@@ -176,6 +175,33 @@ public class GerenciadorDeVendas {
                     + calculaValorTotalServicos(servicosVendidos);
         }
         return cupomFiscal;
+    }
+    
+    public String reimprimirBoleto(int codigoDaVenda) {
+        for (Venda vendaDesejada : bd.getVendas()) {
+            if (codigoDaVenda == vendaDesejada.getCodigo()) {
+                return vendaDesejada.getBoleto();
+            }
+        }
+        return "Código Não Encontrado";
+    }
+    
+    public String reimprimirCupomProdutos(int codigoDaVenda) {
+        for (Venda vendaDesejada : bd.getVendas()) {
+            if (codigoDaVenda == vendaDesejada.getCodigo()) {
+                return vendaDesejada.getCupomFiscalProdutos();
+            }
+        }
+        return "Código Não Encontrado";
+    }
+    
+    public String reimprimirCupomServicos(int codigoDaVenda) {
+        for (Venda vendaDesejada : bd.getVendas()) {
+            if (codigoDaVenda == vendaDesejada.getCodigo()) {
+                return vendaDesejada.getCupomFiscalServicos();
+            }
+        }
+        return "Código Não Encontrado";
     }
 
 }
