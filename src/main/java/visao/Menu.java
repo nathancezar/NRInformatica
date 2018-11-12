@@ -580,7 +580,7 @@ public class Menu {
 
         switch (escolha) {
             case 1:
-                break;
+
             case 2:
                 break;
                 // TODO: 10/11/18 Para visualizar cupom fiscal é necessário informar os produtos.
