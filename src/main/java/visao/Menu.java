@@ -553,8 +553,8 @@ public class Menu {
     private void menuFinalizarCompra() {
         Cliente cliente = loginCliente();
         System.out.println("-----------Finalizando compra-----------");
-        System.out.println("-----------Bem vindo, "+cliente.getNome()+ " ----------");
-        System.out.println("1 - Finalizar compra e gerar boleto.");
+        System.out.println("-----------Bem vindo, " + cliente.getNome() + " ----------");
+        System.out.println("1 - Finalizar compra.");
         System.out.println("0 - Voltar ao menu inicial.");
 
         int escolha = scanner.nextInt();
