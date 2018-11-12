@@ -567,6 +567,7 @@ public class Menu {
 
     }
 
+    //menu alterado
     private void menuInformarDadosDeCompra(Cliente cliente) {
         int codigoDaVenda = venda.realizarVenda(carrinho, cliente);
         boolean sair = false;
