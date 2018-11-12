@@ -554,7 +554,7 @@ public class Menu {
         Cliente cliente = loginCliente();
         System.out.println("-----------Finalizando compra-----------");
         System.out.println("-----------Bem vindo, "+cliente.getNome()+ " ----------");
-        System.out.println("1 - Finalizar compra e gerar boleto.");
+        System.out.println("1 - Finalizar compra.");
         System.out.println("0 - Voltar ao menu inicial.");
 
         int escolha = scanner.nextInt();
@@ -569,7 +569,7 @@ public class Menu {
     }
 
     private void menuInformarDadosDeCompra(Cliente cliente) {
-        venda.realizarVenda(carrinho, cliente);
+        venda.realizarVenda(this.carrinho, cliente);
         System.out.println("Compra finalizada com sucesso!");
         System.out.println("------------------------------");
         System.out.println("1 - Visualizar bolero");
@@ -580,7 +580,7 @@ public class Menu {
 
         switch (escolha) {
             case 1:
-                venda.gerarBoleto(carrinho);
+
             case 2:
                 break;
                 // TODO: 10/11/18 Para visualizar cupom fiscal é necessário informar os produtos.
