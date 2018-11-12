@@ -29,6 +29,7 @@ public class Carrinho {
     private float valorTotal;
     private float valorDoDescontoRecebido;
     private final Cronometro cronometro;
+    private Cliente cliente;
 
     public Carrinho() {
         this.listaDeProdutos = new ArrayList<>();
@@ -43,7 +44,9 @@ public class Carrinho {
         return listaDeProdutos;
     }
 
-    public ArrayList<Servico> getListaDeServicos() { return listaDeServicos; }
+    public ArrayList<Servico> getListaDeServicos() {
+        return listaDeServicos;
+    }
 
     public Cliente getClienteDoCarrinho() {
         return clienteDoCarrinho;
@@ -73,13 +76,20 @@ public class Carrinho {
         return cronometro;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
     // inicia uma contagem para cancelar o carrinho
     // ainda não achei uma forma de cancelar apos adicionar outro produto
     private void iniciarContagem() {
-       if(!cronometro.isCronometroRodando()) {
-           cronometro.run();
-       }
+        if (!cronometro.isCronometroRodando()) {
+            cronometro.run();
+        }
     }
 
     // adiciona ao carrinho a quantidade desejada de um produto
@@ -91,12 +101,12 @@ public class Carrinho {
         if (verificaSeJaContemProduto(produto.getCodigo())) {
             adicionaProdutoExistente(produto, quantidade);
             promocao.verificaPromocoesAplicaveis(this);
-            iniciarContagem();
+            //iniciarContagem();
             return true;
         } else if (verificaDisponibilidade(produto, quantidade)) {
             adicionarProdutoNovo(produto, quantidade);
             promocao.verificaPromocoesAplicaveis(this);
-            iniciarContagem();
+            //iniciarContagem();
             return true;
         }
         return false;
@@ -136,11 +146,12 @@ public class Carrinho {
         ArrayList<String> datasDoServico = new ArrayList<>();
         datasDoServico.add(data);
 
-        Servico servicoNoCarrinho = new Servico(servico.getCodigo(), servico.getNome(), datasDoServico, servico.getPreco());
+        Servico servicoNoCarrinho = new Servico(servico.getCodigo(),
+                servico.getNome(), datasDoServico, servico.getPreco());
 
         removeDataDoServicoEmEstoque(servico, data);
         this.listaDeServicos.add(servicoNoCarrinho);
-        this.setValorTotal(getValorTotal()+servico.getPreco());
+        this.setValorTotal(getValorTotal() + servico.getPreco());
         iniciarContagem();
         return true;
     }
@@ -209,7 +220,7 @@ public class Carrinho {
         if (this.listaDeProdutos.contains(produto)) {
             this.retornaQuantidadeAoEstoque(produto, quantARemover);
             this.valorTotal -= (produto.getPreco() * quantARemover);
-            this.valorTotal = Math.max(valorTotal,0);
+            this.valorTotal = Math.max(valorTotal, 0);
             produto.setQuantidade(produto.getQuantidade() - quantARemover);
             if (produto.getQuantidade() <= 0) {
                 this.listaDeProdutos.remove(produto);
@@ -223,7 +234,7 @@ public class Carrinho {
         int quantidadeCorreta = Math.min(quantARemover, produto.getQuantidade());
         Produto produtoOriginal = instanciaDoProdutoOriginal(produto);
         if (produtoOriginal != null) {
-            produtoOriginal.setQuantidade(quantidadeCorreta+produtoOriginal.getQuantidade());
+            produtoOriginal.setQuantidade(quantidadeCorreta + produtoOriginal.getQuantidade());
         }
     }
 

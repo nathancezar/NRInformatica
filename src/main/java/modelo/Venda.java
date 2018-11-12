@@ -5,7 +5,7 @@
  */
 package modelo;
 
-import java.util.Random;
+import bancoDeDados.BancoDeDados;
 
 /**
  *
@@ -13,17 +13,18 @@ import java.util.Random;
  */
 public class Venda {
 
-    String boleto;
-    String cupomFiscal;
-    int codigo;
-    Random rd = new Random();
-    Cliente cliente;
+    private BancoDeDados bd = BancoDeDados.getBancoDados();
+    private String boleto;
+    private String cupomFiscalProdutos;
+    private String cupomFiscalServicos;
+    private final int codigo;
+    private boolean aplicadaPromocaoNaVenda = false;
+    private final Cliente cliente;
 
-    public Venda(Cliente cliente_, String cupom_, String boleto_) {
-        this.boleto = boleto_;
+    public Venda(Cliente cliente_, String boleto_) {
         this.cliente = cliente_;
-        this.cupomFiscal = cupom_;
-        this.codigo = Integer.parseInt(String.format("%05d", rd.nextInt(10000)));
+        this.boleto = boleto_;
+        this.codigo = (bd.getVendas().size()+1);
     }
 
     public String getBoleto() {
@@ -34,16 +35,36 @@ public class Venda {
         this.boleto = boleto;
     }
 
-    public String getCupomFiscal() {
-        return cupomFiscal;
+    public String getCupomFiscalProdutos() {
+        return cupomFiscalProdutos;
     }
 
-    public void setCupomFiscal(String cupomFiscal) {
-        this.cupomFiscal = cupomFiscal;
+    public void setCupomFiscalProdutos(String cupomFiscalProdutos) {
+        this.cupomFiscalProdutos = cupomFiscalProdutos;
     }
 
     public Cliente getCliente() {
         return cliente;
+    }
+
+    public String getCupomFiscalServicos() {
+        return cupomFiscalServicos;
+    }
+
+    public void setCupomFiscalServicos(String cupomFiscalServicos) {
+        this.cupomFiscalServicos = cupomFiscalServicos;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public boolean isAplicadaPromocaoNaVenda() {
+        return aplicadaPromocaoNaVenda;
+    }
+
+    public void setAplicadaPromocaoNaVenda(boolean aplicadaPromocaoNaVenda) {
+        this.aplicadaPromocaoNaVenda = aplicadaPromocaoNaVenda;
     }
 
 }

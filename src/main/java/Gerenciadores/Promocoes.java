@@ -104,4 +104,11 @@ public class Promocoes {
         carrinho.setValorDoDescontoRecebido(maiorDesconto);
         carrinho.setValorTotal(carrinho.getValorTotal() - maiorDesconto);
     }
+
+    //retira o desconto aplicado ao carrinho
+    public synchronized void removePromocoesAplicadas(Carrinho carrinho) {
+        carrinho.setValorTotal(carrinho.getValorTotal()
+                + carrinho.getValorDoDescontoRecebido());
+        carrinho.setValorDoDescontoRecebido(0);
+    }
 }
