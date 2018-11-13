@@ -39,9 +39,11 @@ public class GerenciadorDeVendas {
     }
 
     public synchronized int realizarVenda(Carrinho carrinho, Cliente cliente) {
+        ArrayList<Produto> produtosVendidos = carrinho.getListaDeProdutos();
         carrinho.setCliente(cliente);
         removerDescontosInvalidos(carrinho, cliente); // isso deve ser chamado no menu!! avisar ao cliente a retirada do desconto
         Venda novaVenda = new Venda(cliente, gerarBoleto(carrinho));
+        novaVenda.setValorTotal(calculaValorTotalProdutos(produtosVendidos));
         novaVenda.setCupomFiscalProdutos(gerarCupomFiscalProdutos(carrinho));
         novaVenda.setCupomFiscalServicos(gerarCupomFiscalServicos(carrinho));
         bd.getVendas().add(novaVenda);
@@ -171,6 +173,9 @@ public class GerenciadorDeVendas {
     }
     
     public String reimprimirBoleto(int codigoDaVenda) {
+        if (codigoDaVenda == -1) {
+            return "";
+        }
         for (Venda vendaDesejada : bd.getVendas()) {
             if (codigoDaVenda == vendaDesejada.getCodigo()) {
                 return vendaDesejada.getBoleto();
@@ -180,6 +185,9 @@ public class GerenciadorDeVendas {
     }
     
     public String reimprimirCupomProdutos(int codigoDaVenda) {
+        if (codigoDaVenda == -1) {
+            return "";
+        }
         for (Venda vendaDesejada : bd.getVendas()) {
             if (codigoDaVenda == vendaDesejada.getCodigo()) {
                 return vendaDesejada.getCupomFiscalProdutos();
@@ -189,6 +197,9 @@ public class GerenciadorDeVendas {
     }
     
     public String reimprimirCupomServicos(int codigoDaVenda) {
+        if (codigoDaVenda == -1) {
+            return "";
+        }
         for (Venda vendaDesejada : bd.getVendas()) {
             if (codigoDaVenda == vendaDesejada.getCodigo()) {
                 return vendaDesejada.getCupomFiscalServicos();

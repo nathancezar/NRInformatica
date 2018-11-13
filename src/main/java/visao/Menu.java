@@ -29,10 +29,15 @@ public class Menu {
     DecimalFormat df = new DecimalFormat("#0.00");
     Promocoes promocoes = Promocoes.getPromocoes();
     GerenciadorDeVendas venda = GerenciadorDeVendas.getVendas();
+    Cliente cliente;
 
     public void menuInicial() {
+        String nomeCliente = "";
+        if (this.cliente != null) {
+            nomeCliente = this.cliente.getNome();
+        }
 
-        System.out.println("\nSeja bem-vindo a NR Informática");
+        System.out.println("\nSeja bem-vindo, "+ nomeCliente +" a NR Informática");
         System.out.println("");
         System.out.println("Veja nossos destaques:");
         System.out.println(busca.mostraProdutosDaLista(busca.buscaRandomicaDeProdutos(3)));
@@ -43,6 +48,8 @@ public class Menu {
         System.out.println("4 - Inserir um Serviço no carrinho");
         System.out.println("5 - Visualizar carrinho");
         System.out.println("6 - Entrar como administrador");
+        System.out.println("7 - Fazer login / Cadastrar-se");
+        System.out.println("8 - Área do cliente");
         System.out.println("0 - Sair");
 
         int escolha = scanner.nextInt();
@@ -65,6 +72,12 @@ public class Menu {
                 menuInicial();
             case 6:
                 menuAdmLogin();
+                menuInicial();
+            case 7:
+                menuLoginInicio();
+                menuInicial();
+            case 8:
+                menuAreaDoCliente();
                 menuInicial();
             case 0:
                 System.exit(0);
@@ -529,8 +542,35 @@ public class Menu {
     }
 
     private void menuLoginParaFinalizar() {
+        if (this.cliente != null) {
+            menuFinalizarCompra();
+        } else {
+            System.out.println("---------------------------------------------");
+            System.out.println("-------Login para finalizar compra ----------");
+            System.out.println("---------------------------------------------");
+
+            System.out.println("1 - Fazer login");
+            System.out.println("2 - Cadastrar-se");
+            System.out.println("0 - Voltar ao menu anterior");
+
+            int escolha = scanner.nextInt();
+
+            switch (escolha) {
+                case 1:
+                    this.cliente = loginCliente();
+                    menuFinalizarCompra();
+                case 2:
+                    cadastrarClienteNovo();
+                case 3:
+                    menuInicial();
+            }
+        }
+
+    }
+
+    private void menuLoginInicio() {
         System.out.println("---------------------------------------------");
-        System.out.println("-------Login para finalizar compra ----------");
+        System.out.println("-------      Login / Cadastro      ----------");
         System.out.println("---------------------------------------------");
 
         System.out.println("1 - Fazer login");
@@ -541,18 +581,19 @@ public class Menu {
 
         switch (escolha) {
             case 1:
-                menuFinalizarCompra();
+                this.cliente = loginCliente();
+                menuInicial();
             case 2:
                 cadastrarClienteNovo();
+                menuInicial();
             case 3:
                 menuInicial();
         }
     }
 
+
     private void menuFinalizarCompra() {
-        Cliente cliente = loginCliente();
         System.out.println("-----------Finalizando compra-----------");
-        System.out.println("-----------Bem vindo, " + cliente.getNome() + " ----------");
         System.out.println("1 - Finalizar compra.");
         System.out.println("0 - Voltar ao menu inicial.");
 
@@ -560,7 +601,7 @@ public class Menu {
 
         switch (escolha) {
             case 1:
-                menuInformarDadosDeCompra(cliente);
+                menuInformarDadosDeCompra();
             case 0:
                 menuInicial();
         }
@@ -568,7 +609,7 @@ public class Menu {
     }
 
     // menu alterado
-    private void menuInformarDadosDeCompra(Cliente cliente) {
+    private void menuInformarDadosDeCompra() {
         int codigoDaVenda = venda.realizarVenda(carrinho, cliente);
         boolean sair = false;
         System.out.println("Compra finalizada com sucesso!");
@@ -602,6 +643,69 @@ public class Menu {
             }
         }
         menuInicial();
+    }
+
+    private void menuAreaDoCliente() {
+        int codigoDaVenda;
+
+            System.out.println("------------------------------");
+            System.out.println("1 - Visualizar boleto");
+            System.out.println("2 - Visualizar cupom fiscal dos produtos comprados");
+            System.out.println("3 - Visualizar cupom fiscal dos serviços contratados");
+            System.out.println("4 - Voltar ao menu inicial");
+
+
+            int escolha = scanner.nextInt();
+
+            switch (escolha) {
+                case 1:
+                    System.out.println(venda.reimprimirBoleto(escolheACompraDoCliente(this.cliente))
+                            + "\n");
+                    menuAreaDoCliente();
+                case 2:
+                    System.out.println(venda.reimprimirCupomProdutos(escolheACompraDoCliente(this.cliente))
+                            + "\n");
+                    menuAreaDoCliente();
+                case 3:
+                    System.out.println(venda.reimprimirCupomServicos(escolheACompraDoCliente(this.cliente))
+                            + "\n");
+                    menuAreaDoCliente();
+                case 4:
+                    menuInicial();
+            }
+    }
+
+    private int escolheACompraDoCliente(Cliente cliente) { // Essa função não deveria estar aqui
+        if (cliente == null) {
+            System.out.println("Você ainda não fez login!");
+            menuLoginInicio();
+        }
+
+        System.out.println("-- Estas são todas as suas compras ---");
+        System.out.println("-------------------------------------");
+
+        ArrayList<Venda> comprasDoCliente = new ArrayList<>();
+        for (int i = 0; i < bd.getVendas().size(); i++) {
+            if (cliente.getCpf() == bd.getVendas().get(i).getCliente().getCpf());
+                comprasDoCliente.add(bd.getVendas().get(i));
+        }
+
+        if (comprasDoCliente.size() == 0) {
+            System.out.println("Você ainda não comprou nada conosco :(");
+            return -1;
+        } else
+        {
+            for(int i = 0; i < comprasDoCliente.size(); i++) {
+                System.out.printf("Código compra: "+comprasDoCliente.get(i).getCodigo()+ " | Valor total: "+"%.2f", comprasDoCliente.get(i).getValorTotal());
+                System.out.println("");
+            }
+        }
+
+        System.out.println("-------------------------------------");
+        System.out.println("Digite o código da compra realizada.");
+
+        int codVenda = scanner.nextInt();
+        return codVenda;
     }
 
 }

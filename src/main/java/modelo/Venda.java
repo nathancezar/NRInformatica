@@ -21,6 +21,8 @@ public class Venda {
     private boolean aplicadaPromocaoNaVenda = false;
     private final Cliente cliente;
 
+    private float valorTotal;
+
     public Venda(Cliente cliente_, String boleto_) {
         this.cliente = cliente_;
         this.boleto = boleto_;
@@ -65,6 +67,14 @@ public class Venda {
 
     public void setAplicadaPromocaoNaVenda(boolean aplicadaPromocaoNaVenda) {
         this.aplicadaPromocaoNaVenda = aplicadaPromocaoNaVenda;
+    }
+
+    public float getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(float valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
 }
