@@ -14,6 +14,7 @@ import Gerenciadores.GerenciadorDeBusca;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -536,7 +537,9 @@ public class Menu {
         String complemento = scanner.next();
         System.out.println("Digite o número da residência:");
         int numero = scanner.nextInt();
-        Endereco end = new Endereco(estado, cidade, bairro, rua, complemento, numero);
+        Random gerador = new Random();
+        int codigo = gerador.nextInt(100);
+        Endereco end = new Endereco(codigo, estado, cidade, bairro, rua, complemento, numero);
 
         cadastro.cadastrarCliente(nome, cpf, senha, end);
     }

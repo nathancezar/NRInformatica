@@ -6,12 +6,17 @@
 package controle;
 
 import Gerenciadores.Cadastros;
+import Mapeadores.MapeadorEndereco;
+import Mapeadores.MapeadorProduto;
 import modelo.Cliente;
 import modelo.Endereco;
 import modelo.Servico;
 import visao.Menu;
 import modelo.Produto;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -20,8 +25,14 @@ import java.util.ArrayList;
  */
 public class Main {
 
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) throws SQLException {
+
+        String url = "jdbc:postgresql://localhost:5432/NRinformatica";
+        String username = "postgres";
+        String password = "root";
+
+        Connection db = DriverManager.getConnection(url, username, password);
+
         Cadastros cadastro = Cadastros.getCadastros();
         
         Produto produtoP1 = new Produto(1000, 30, 49.90f, "Mouse Optico",
@@ -59,11 +70,29 @@ public class Main {
         cadastro.adicionarServico(s1);
         cadastro.adicionarServico(s2);
 
-        Endereco end = new Endereco("RS", "Constantina", "São Roque", "São José", "casa", 361);
+        Endereco end = new Endereco(1,"RS", "Constantina", "São Roque", "São José", "casa", 361);
 
         Cliente cliente = new Cliente("Rafael", 12345678, end, "1234");
 
         cadastro.adicionarCliente(cliente);
+
+        MapeadorProduto mp = new MapeadorProduto(db);
+        MapeadorEndereco me = new MapeadorEndereco(db);
+
+        // Produtos adicionados pelo BD.
+
+        Produto p1 = mp.get(4000);
+        cadastro.adicionarProduto(p1);
+
+        Produto p2 = mp.get(4001);
+        cadastro.adicionarProduto(p2);
+
+        Produto p3 = mp.get(4002);
+        cadastro.adicionarProduto(p3);
+
+        Endereco endereco10 = me.get(10);
+        Cliente cliente2 = new Cliente("Nathan", 23456789, endereco10, "nathan");
+        cadastro.adicionarCliente(cliente2);
         
         Menu menu = new Menu();
         menu.menuInicial();

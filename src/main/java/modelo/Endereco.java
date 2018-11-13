@@ -6,16 +6,20 @@
 package modelo;
 
 public class Endereco {
+
+    int codigo;
+
     private String estado, cidade, bairro, rua, complemento;
     private int numero;
 
-    public Endereco(String estado, String cidade, String bairro, String rua, String complemento, int numero) {
+    public Endereco(int codigo, String estado, String cidade, String bairro, String rua, String complemento, int numero) {
         this.estado = estado;
         this.cidade = cidade;
         this.bairro = bairro;
         this.rua = rua;
         this.complemento = complemento;
         this.numero = numero;
+        this.codigo = codigo;
     }
 
     public String getEstado() {
@@ -64,6 +68,14 @@ public class Endereco {
 
     public void setNumero(int numero) {
         this.numero = numero;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
     
     
